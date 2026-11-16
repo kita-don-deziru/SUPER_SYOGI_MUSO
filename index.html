@@ -10399,6 +10399,2259 @@ window.opBoardState.flipX += (window.opBoardState.targetFlipX - window.opBoardSt
         };
     }
 })();
+// ==============================================================================
+// 📖🔥 ストーリーモード専用スクリーン ＆ 初心者向けチュートリアル調整【1回目 / 2】
+// ==============================================================================
+(function() {
+    window.CUSTOM_STORY_CHAPTERS = [
+        {
+            id: 'prologue',
+            num: 0,
+            title: '序章：理を変える力と王国の戦士',
+            subtitle: 'プロローグ 〜 チュートリアル戦（VS 王国の戦士・訓練）',
+            playerChar: 'pawn',
+            stage: 1,
+            bossType: 'king2',
+            bossName: '王国の戦士（訓練）',
+            bossKanji: '玉',
+            cpuLv: 1,
+            isTutorial: true, // 初心者向けの超やさしい訓練モードフラグ
+            introTalk: [
+                { speaker: '語り', kanji: '記', color: '#a4b0be', text: '将棋の駒は、元々は平和に暮らす人間（村人）だった――。' },
+                { speaker: '襲撃者・王将', kanji: '王', color: '#ff3f3f', text: '「ここが最後か……」' },
+                { speaker: '語り', kanji: '記', color: '#a4b0be', text: 'ある日、王将たちの襲撃により村人たちは連れ去られてしまう。もちろん、主人公も。' },
+                { speaker: '語り', kanji: '記', color: '#a4b0be', text: 'そこでみんなは「ある薬」を飲まされる。すると体が将棋の駒へと変わっていき、次第に凶暴になっていく……！' },
+                { speaker: '母', kanji: '母', color: '#ff9ff3', text: '「お願い……理性を保って、逃げて……！！」' },
+                { speaker: '語り', kanji: '記', color: '#a4b0be', text: '自分も駒になり理性を失いかけたその時、母親が残った理性で自分を逃がした！だが、逃がしたことで母親は殺されてしまう……！' },
+                { speaker: '主人公', kanji: '歩', color: '#ffd32a', text: '「母さん……っ！！ うおおおおおおっ！！」' },
+                { speaker: '語り', kanji: '記', color: '#a4b0be', text: '母の死を見たことで覚醒し王将に襲いかかるも、あっけなく敗れ、そのまま海へと落ちてしまう……。' },
+                { speaker: '襲撃者・王将', kanji: '王', color: '#ff3f3f', text: '「もう死んだだろ」――そう言い残し、王将は村人たちを連れて去ってしまった。' },
+                { speaker: '語り', kanji: '記', color: '#a4b0be', text: '1週間後、主人公は小さな島に流れ着いていた。そこは生き残りたちが作った集落だった。' },
+                { speaker: '集落の村人', kanji: '村', color: '#2ecc71', text: '「ひぃっ！ 駒の化け物だ！ 近づくな！」（貧相な槍を向けられる）' },
+                { speaker: '主人公', kanji: '歩', color: '#ffd32a', text: '「待ってくれ！ 俺は化け物じゃない、みんなと同じ人間だったんだ！」' },
+                { speaker: '語り', kanji: '記', color: '#a4b0be', text: '必死に説明するうち、今までのすべてを思い出す。はらわたが煮えくり返るほどの怒りだった。' },
+                { speaker: '主人公', kanji: '歩', color: '#ffd32a', text: '「今すぐにでも復讐に行く！ みんなを助けに行くんだ！」' },
+                { speaker: '集落の村人', kanji: '村', color: '#2ecc71', text: '「やめろ！ 今のお前では絶対に勝てない！」' },
+                { speaker: '主人公', kanji: '歩', color: '#ffd32a', text: '「なぜだ！ なぜそう言い切れる！」' },
+                { speaker: '語り', kanji: '記', color: '#a4b0be', text: '頭に血が上っていたが、その気持ちは本気だった。安々と食い下がるわけにはいかない――そうしているうちに、視界がかすみ始める……。' },
+                { speaker: '暗転', kanji: '…', color: '#576574', text: '―――――― 目を開けると、自分はベッドに入っていた。' },
+                { speaker: '主人公', kanji: '歩', color: '#ffd32a', text: '「すぐに行かなければいけないのに、何をしているんだ……」' },
+                { speaker: '集落の老人', kanji: '老', color: '#feca57', text: '「お主が、闇王の支配から逃れた者か……」' },
+                { speaker: '主人公', kanji: '歩', color: '#ffd32a', text: '「闇王……？」' },
+                { speaker: '集落の老人', kanji: '老', color: '#feca57', text: '「そうじゃ。この世界がおかしくなったのはすべて闇王のせいじゃ。闇王は貪欲に力を求め、ついには禁忌とされる『理（ことわり）を変える力』を手に入れてしもうた。」' },
+                { speaker: '集落の老人', kanji: '老', color: '#feca57', text: '「この世界は奴にとって単なる暇つぶしでしかないじゃろう……」' },
+                { speaker: '主人公', kanji: '歩', color: '#ffd32a', text: '「あいつは、お遊びで母さんたちを……っ！！」' },
+                { speaker: '語り', kanji: '記', color: '#a4b0be', text: '怒りで正気を失いそうになりながら、主人公はその感情をグッと押さえつけた。' },
+                { speaker: '集落の老人', kanji: '老', color: '#feca57', text: '「この村も安全とは言えん。そこでじゃ！ おぬしをこの村一番の戦士に鍛えてもらうことにする！」' },
+                { speaker: '集落の老人', kanji: '老', color: '#feca57', text: '「この村一番の戦士とは、おぬしと同じく駒にされた王国の戦士じゃ！ あやつ、『俺が鍛える』とか言っておぬしの回復を待っておったんじゃよ！」' },
+                { speaker: '集落の老人', kanji: '老', color: '#feca57', text: '「あやつの訓練は相当厳しいぞい！ それでもやるか？」' },
+                { speaker: '主人公', kanji: '歩', color: '#ffd32a', text: '「はい！！」' },
+                { speaker: '王国の戦士', kanji: '玉', color: '#00d2ff', text: '「目が覚めたか、新入り。まずは肩慣らしだ、俺に3回攻撃を当てて『と金』に進化してみろ！ ＜チュートリアル開始＞」' }
+            ],
+            winTalk: [
+                { speaker: '王国の戦士', kanji: '玉', color: '#00d2ff', text: '「ほう……王将に敗れて海へ落ちたとは思えん良い目だ。基本の立ち回りは合格だな！」' },
+                { speaker: '主人公', kanji: '歩', color: '#ffd32a', text: '「はぁ、はぁ……ありがとうございます！ もっと強くなって、必ず闇王と王将たちを倒します！」' },
+                { speaker: '集落の老人', kanji: '老', color: '#feca57', text: '「見事じゃ！ まずは第一歩を踏み出したな。さあ、次の試練へ備えるのじゃ！」' }
+            ]
+        }
+    ];
+
+    // ストーリーモード専用の独立画面（#story-screen）を #game-container 内に生成
+    window.ensureStoryDedicatedScreen = function() {
+        const container = document.getElementById('game-container');
+        if (!container) return null;
+
+        let scrStory = document.getElementById('story-screen');
+        if (!scrStory) {
+            scrStory = document.createElement('div');
+            scrStory.id = 'story-screen';
+            scrStory.className = 'screen';
+            scrStory.style.cssText =
+                'position:absolute; inset:0; ' +
+                'background:radial-gradient(circle at 50% 20%, #2c1e4a 0%, #120d24 60%, #05050c 100%); ' +
+                'padding:14px 16px; box-sizing:border-box; display:none; flex-direction:column; z-index:40;';
+            container.appendChild(scrStory);
+        }
+        return scrStory;
+    };
+
+    // ストーリー専用画面を開く関数（他の画面をすべて非表示にして切り替える）
+    window.openDedicatedStoryScreen = function() {
+        if (typeof playSE === 'function') playSE('select');
+        const scrStory = window.ensureStoryDedicatedScreen();
+        if (!scrStory) return;
+
+        // 他の画面をすべて隠す
+        if (window.scrTitle) window.scrTitle.style.display = 'none';
+        if (window.scrSelect) window.scrSelect.style.display = 'none';
+        if (window.scrGame) window.scrGame.style.display = 'none';
+        if (window.scrResult) window.scrResult.style.display = 'none';
+
+        const clearedList = JSON.parse(localStorage.getItem('smash_shogi_story_cleared') || '[]');
+
+        let listHtml = '';
+        window.CUSTOM_STORY_CHAPTERS.forEach(ch => {
+            const isCleared = clearedList.includes(ch.id);
+            const lvBadge = ch.isTutorial ? '入門・チュートリアル' : ('推奨LV.' + ch.cpuLv);
+            listHtml +=
+                '<div style="background:rgba(0,0,0,0.6); border:2px solid ' + (isCleared ? '#2ecc71' : '#ffd32a') + '; ' +
+                'border-radius:10px; padding:12px; margin-bottom:10px; box-shadow:0 4px 15px rgba(0,0,0,0.6);">' +
+                    '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">' +
+                        '<span style="font-size:15px; font-weight:bold; color:#ffd32a;">' + ch.title + '</span>' +
+                        '<span style="background:#222; border:1px solid #00d2ff; color:#00d2ff; padding:2px 6px; border-radius:4px; font-size:10px; font-weight:bold;">' + lvBadge + '</span>' +
+                    '</div>' +
+                    '<div style="font-size:12px; color:#dfe6e9; margin-bottom:8px;">' + ch.subtitle + '</div>' +
+                    '<div style="display:flex; justify-content:space-between; align-items:center;">' +
+                        '<span style="font-size:11px; font-weight:bold; color:' + (isCleared ? '#2ecc71' : '#ff9f43') + ';">' +
+                            (isCleared ? '✅ クリア済み' : '🔥 未クリア') +
+                        '</span>' +
+                        '<button type="button" onclick="startStoryChapterById(\'' + ch.id + '\')" ' +
+                        'style="padding:7px 20px; font-size:13px; font-weight:bold; background:linear-gradient(135deg, #eb2f06, #ff9f43); color:#fff; border:1px solid #fff; border-radius:6px; cursor:pointer;">' +
+                            '▶ 物語を始める' +
+                        '</button>' +
+                    '</div>' +
+                '</div>';
+        });
+
+        scrStory.innerHTML =
+            '<div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #ffd32a; padding-bottom:6px; margin-bottom:10px;">' +
+                '<div>' +
+                    '<div style="font-size:10px; color:#00d2ff; letter-spacing:2px;">STORY MODE</div>' +
+                    '<div style="font-size:18px; font-weight:900; color:#ffd32a; text-shadow:0 0 10px #ff3f3f;">📖 村人下剋上伝 〜成金無双〜</div>' +
+                '</div>' +
+                '<button type="button" onclick="closeDedicatedStoryScreen()" ' +
+                'style="padding:6px 12px; font-size:11px; font-weight:bold; background:#34495e; color:#fff; border:1px solid #7f8c8d; border-radius:6px; cursor:pointer;">' +
+                    '← モード選択へ戻る' +
+                '</button>' +
+            '</div>' +
+            '<div style="background:rgba(255,211,42,0.1); border-left:3px solid #ffd32a; padding:6px 10px; font-size:11px; color:#f5cd79; margin-bottom:10px;">' +
+                '【あらすじ】闇王の『理を変える力』と謎の薬により駒へと変えられた村人たち。母の犠牲で生き延びた主人公（歩）の反撃が始まる――。' +
+            '</div>' +
+            '<div style="flex:1; overflow-y:auto; padding-right:2px;">' + listHtml + '</div>';
+
+        scrStory.style.display = 'flex';
+    };
+
+    window.closeDedicatedStoryScreen = function() {
+        if (typeof playSE === 'function') playSE('select');
+        const scrStory = document.getElementById('story-screen');
+        if (scrStory) scrStory.style.display = 'none';
+        goToSelectScreen();
+    };
+})();
+// ==============================================================================
+// 📖🔥 ストーリーモード専用スクリーン ＆ 初心者向けチュートリアル調整【2回目 / 2】
+// ==============================================================================
+(function() {
+    window.activeStoryChapter = null;
+
+    // 1. ノベル風会話再生エンジン
+    window.playCustomStoryTalk = function(talkList, onFinish) {
+        const container = document.getElementById('game-container');
+        if (!container || !talkList || talkList.length === 0) {
+            if (onFinish) onFinish();
+            return;
+        }
+
+        const old = document.getElementById('custom-story-modal');
+        if (old) old.remove();
+
+        const modal = document.createElement('div');
+        modal.id = 'custom-story-modal';
+        modal.style.cssText =
+            'position:absolute; inset:0; background:rgba(5, 7, 15, 0.88); z-index:260; ' +
+            'display:flex; flex-direction:column; justify-content:space-between; align-items:center; ' +
+            'padding:16px; box-sizing:border-box; cursor:pointer;';
+
+        let step = 0;
+
+        function drawStep() {
+            const item = talkList.at(step);
+            if (!item) {
+                modal.remove();
+                if (onFinish) onFinish();
+                return;
+            }
+
+            const isNarrator = (item.speaker === '語り' || item.speaker === '暗転');
+            const bgOverlay = (item.speaker === '暗転') ? 'rgba(0, 0, 0, 0.98)' : 'rgba(5, 7, 15, 0.85)';
+            modal.style.background = bgOverlay;
+
+            modal.innerHTML =
+                '<div style="width:100%; display:flex; justify-content:flex-end;">' +
+                    '<button type="button" id="btn-skip-story-talk" style="background:rgba(0,0,0,0.65); color:#ffd32a; border:1px solid #ffd32a; border-radius:4px; padding:4px 10px; font-size:11px; font-weight:bold; cursor:pointer;">会話をスキップ ▶▶</button>' +
+                '</div>' +
+                '<div style="width:100%; max-width:540px; background:linear-gradient(135deg, #1e272e, #111622); ' +
+                'border:3px solid ' + item.color + '; border-radius:12px; padding:14px 16px; ' +
+                'box-shadow:0 0 25px ' + item.color + '; display:flex; gap:14px; align-items:center; margin-bottom:10px;">' +
+                    (isNarrator ? '' :
+                        '<div style="flex-shrink:0; width:62px; height:74px; background:linear-gradient(180deg, #fff3d1, #c88a36); ' +
+                        'clip-path:polygon(50% 0%, 100% 24%, 86% 100%, 14% 100%, 0% 24%); ' +
+                        'display:flex; justify-content:center; align-items:center; font-size:28px; font-weight:bold; color:#1a1105;">' +
+                            item.kanji +
+                        '</div>'
+                    ) +
+                    '<div style="flex:1; text-align:left;">' +
+                        (isNarrator ? '' : '<div style="font-size:13px; font-weight:bold; color:' + item.color + '; margin-bottom:5px;">' + item.speaker + '</div>') +
+                        '<div style="font-size:14px; color:' + (isNarrator ? '#dfe6e9' : '#ffffff') + '; line-height:1.55; min-height:48px;">' + item.text + '</div>' +
+                        '<div style="text-align:right; font-size:11px; color:#ffd32a; margin-top:6px;">▼ タップして次へ (' + (step + 1) + '/' + talkList.length + ')</div>' +
+                    '</div>' +
+                '</div>';
+
+            const skipBtn = document.getElementById('btn-skip-story-talk');
+            if (skipBtn) {
+                skipBtn.onclick = (ev) => {
+                    ev.stopPropagation();
+                    modal.remove();
+                    if (onFinish) onFinish();
+                };
+            }
+        }
+
+        modal.onclick = () => {
+            if (typeof playSE === 'function') playSE('select');
+            step++;
+            drawStep();
+        };
+
+        container.appendChild(modal);
+        drawStep();
+    };
+
+    // 2. セレクト画面に「📖 ストーリーモード」ボタンを追加（専用スクリーンへ遷移）
+    function injectStoryScreenButton() {
+        const offlineBtn = document.getElementById('mode-offline');
+        if (!offlineBtn || document.getElementById('mode-story')) return;
+        const container = offlineBtn.parentElement;
+
+        const storyBtn = document.createElement('button');
+        storyBtn.type = 'button';
+        storyBtn.id = 'mode-story';
+        storyBtn.className = 'btn-toggle';
+        storyBtn.style.cssText = 'border-color:#ffd32a; color:#ffd32a; background:#2c1e4a;';
+        storyBtn.textContent = '📖 ストーリーモード';
+        storyBtn.onclick = () => window.openDedicatedStoryScreen();
+        container.appendChild(storyBtn);
+    }
+
+    const _origInitSelectStory2 = initSelectScreen;
+    initSelectScreen = function() {
+        _origInitSelectStory2.apply(this, arguments);
+        injectStoryScreenButton();
+    };
+    setTimeout(injectStoryScreenButton, 400);
+
+    // 3. 指定した章の「プロローグ会話 ➔ バトル開始」を実行
+    window.startStoryChapterById = function(chapterId) {
+        const ch = window.CUSTOM_STORY_CHAPTERS.find(c => c.id === chapterId);
+        if (!ch) return;
+
+        const scrStory = document.getElementById('story-screen');
+        if (scrStory) scrStory.style.display = 'none';
+
+        window.activeStoryChapter = ch;
+
+        if (ch.playerChar) selectedCharKey = ch.playerChar;
+        selectedStage = ch.stage || 1;
+        selectedCpuType = ch.bossType || 'king2';
+        selectedCpuLevel = ch.cpuLv || 1;
+        gameMode = 'offline';
+        myRole = 'offline';
+
+        window.playCustomStoryTalk(ch.introTalk, () => {
+            executeGameStart();
+
+            if (ch.bossName) {
+                const eNameUi = document.getElementById('ui-e-name');
+                const eTagUi = document.getElementById('enemy-nametag');
+                if (eNameUi) eNameUi.textContent = ch.bossName;
+                if (eTagUi) eTagUi.textContent = ch.bossName;
+            }
+            if (ch.bossKanji) {
+                const eTextUi = document.getElementById('e-text');
+                if (eTextUi) eTextUi.textContent = ch.bossKanji;
+            }
+
+            // 初心者向けチュートリアル調整（王国の戦士の動きをゆっくり・攻撃控えめ・吹っ飛びやすくする）
+            if (ch.isTutorial && e) {
+                e.speed = 1.65;         // かなりゆっくり歩く
+                e.power = 0.55;         // 被ダメージ半分以下
+                e.weight = 0.72;        // 軽くして爽快に吹っ飛ぶ
+                e.cooldown = 75;        // 最初の攻撃まで余裕を持たせる
+                e.isTutorialBot = true; // SP技を使わず攻撃頻度も下げるフラグ
+            }
+        });
+    };
+
+    // チュートリアル中のCPU攻撃間隔をさらに優しくするフック
+    const _origUpdateFrameTutorial = updateFrame;
+    updateFrame = function() {
+        if (e && e.isTutorialBot && window.activeStoryChapter) {
+            e.spGauge = 0; // チュートリアル中は敵のSP必殺技を封印
+            if (e.cooldown === 25) {
+                e.cooldown = 65; // 攻撃間隔を約1.1秒に延長して初心者でも反撃しやすくする
+            }
+        }
+        _origUpdateFrameTutorial.apply(this, arguments);
+    };
+
+    // 4. 試合終了時のストーリー進行・勝利後会話フック
+    const _origEndMatchStory2 = endMatch;
+    endMatch = function(playerWon) {
+        const ch = window.activeStoryChapter;
+        if (!ch) {
+            _origEndMatchStory2.apply(this, arguments);
+            return;
+        }
+
+        clearInterval(gameTimer);
+        gameTimer = null;
+        window.removeEventListener('keydown', handleKeyDown);
+        window.removeEventListener('keyup', handleKeyUp);
+        resetAllKeyStates();
+        const overlay = document.getElementById('touch-pad-overlay');
+        if (overlay) overlay.style.display = 'none';
+        const recPanel = document.getElementById('record-control-panel');
+        if (recPanel) recPanel.style.display = 'none';
+
+        window.activeStoryChapter = null;
+
+        if (playerWon) {
+            let cleared = JSON.parse(localStorage.getItem('smash_shogi_story_cleared') || '[]');
+            if (!cleared.includes(ch.id)) {
+                cleared.push(ch.id);
+                localStorage.setItem('smash_shogi_story_cleared', JSON.stringify(cleared));
+            }
+
+            window.playCustomStoryTalk(ch.winTalk, () => {
+                window.openDedicatedStoryScreen();
+            });
+        } else {
+            alert('【訓練失敗…】もう一度「王国の戦士」の訓練に挑戦しよう！');
+            window.openDedicatedStoryScreen();
+        }
+    };
+})();
+// ==============================================================================
+// 🎬📖 全16幕・動くSVGカットシーン付きプロローグ劇【1-A / 2】
+// ==============================================================================
+(function() {
+    window.PROLOGUE_16_SCENES = [
+        { scene: 'peaceful_village', speaker: '語り', kanji: '記', color: '#2ecc71', text: '将棋の駒は、元々は平和な村で暮らすただの人間（村人）だった――。' },
+        { scene: 'burning_village',  speaker: '襲撃者・王将', kanji: '王', color: '#ff3f3f', text: '「ここが最後か……」――ある日、王将たちの襲撃により平和な村は炎に包まれた！' },
+        { scene: 'abduction',        speaker: '語り', kanji: '記', color: '#ff9f43', text: '抵抗も虚しく、村人たちは全員連れ去られてしまう。もちろん、主人公も。' },
+        { scene: 'forced_potion',    speaker: '王将の兵', kanji: '兵', color: '#a29bfe', text: '「大人しくこれを飲め！」――連行の途中、みんなは怪しく光る紫の薬を飲まされる！' },
+        { scene: 'transformation',   speaker: '語り', kanji: '記', color: '#a29bfe', text: '数分後、体が激しい痛みと共に将棋の駒へと変わっていく！みんなが駒になるにつれて凶暴になっていく……！' },
+        { scene: 'mother_escape',    speaker: '母', kanji: '母', color: '#ff9ff3', text: '「お願い……理性を保って、逃げて……！！」――自分も駒になり理性を失いかけたその時、母親が残った理性で自分を逃がした！' },
+        { scene: 'mother_shot',      speaker: '語り', kanji: '記', color: '#ff3f3f', text: 'だが、逃がした直後――母親は後ろから心臓を撃たれて倒れてしまう……！！' },
+        { scene: 'challenge_king',   speaker: '主人公', kanji: '歩', color: '#ffd32a', text: '「母さん……っ！！ 許さない……許さないぞ王将！！」――母の死を見たことで覚醒し、王将に襲いかかる！' },
+        { scene: 'fall_into_sea',    speaker: '襲撃者・王将', kanji: '王', color: '#ff3f3f', text: '「もう死んだだろ」――だがあっけなく敗れ、そのまま荒れ狂う海へと落ちてしまう……。' },
+        { scene: 'washed_ashore',    speaker: '語り', kanji: '記', color: '#00d2ff', text: '1週間後、主人公は小さな島に流れ着いていた。「ここが最後か」という王将の言葉に希望はなかったが、そこは生き残りたちが作った集落だった。' },
+        { scene: 'spears_pointed',   speaker: '集落の村人', kanji: '村', color: '#e17055', text: '「ひぃっ！ 駒の化け物だ！ 近づくな！」――集落の人たちに貧相な木の槍を向けられる。村人たちは怯えている。' },
+        { scene: 'chief_stops',      speaker: '村長', kanji: '長', color: '#feca57', text: '「待て、全員槍を下げよ！ 様子がおかしい、我々に襲いかかる気はないようじゃ」――村長に止められる。' },
+        { scene: 'explain_truth',    speaker: '主人公', kanji: '歩', color: '#ffd32a', text: '「そうだ、俺は駒になっていたんだ……」――集落の人たちに事情を説明するうち、今までのすべてを思い出す。はらわたが煮えくり返るほどの思いだった。' },
+        { scene: 'faint_away',       speaker: '主人公', kanji: '歩', color: '#ff9f43', text: '「今すぐにでも復讐に行く！」と食い下がるも、「今のお前では勝てない」と言われ――怒りと限界で視界がかすみ、気絶してしまう……。' },
+        { scene: 'poor_bed',         speaker: '主人公', kanji: '歩', color: '#dfe6e9', text: '―――――― 目を開けると、自分は粗末で貧相なベッドに入っていた。「すぐに行かなければいけないのに何をしているんだ……」' },
+        { scene: 'elder_talk_1',     speaker: '老人（村長）', kanji: '老', color: '#feca57', text: '「お主が闇王の支配から逃れた者か……」「闇王……？」' },
+        { scene: 'elder_talk_2',     speaker: '老人（村長）', kanji: '老', color: '#feca57', text: '「そうじゃ、この世界がおかしくなったのはすべて闇王のせいじゃ。闇王は貪欲に力を求め、ついには禁忌とされる『理を変える力』を手に入れてしもうた。この世界は奴にとって単なる暇つぶしでしかないじゃろう……」' },
+        { scene: 'elder_talk_3',     speaker: '主人公', kanji: '歩', color: '#ffd32a', text: '「あいつは、お遊びで母さんたちを……」――怒りで正気を失いそうになりながらその感情を押さえつけた。' },
+        { scene: 'elder_talk_4',     speaker: '老人（村長）', kanji: '老', color: '#feca57', text: '「そこでじゃ！ おぬしをこの村一番の戦士（同じく駒にされた王国の戦士）に鍛えてもらうことにする！ 訓練は相当厳しいぞい！ それでもやるか？」「はい！！」＜チュートリアル開始＞' }
+    ];
+
+    window.buildPrologueSceneVisual = function(sceneId) {
+        const svgOpen = '<svg viewBox="0 0 560 220" width="100%" height="100%" style="border-radius:8px; border:2px solid #555; background:#0b0e17;">';
+        const svgClose = '</svg>';
+
+        if (sceneId === 'peaceful_village') {
+            return svgOpen +
+                '<rect width="560" height="150" fill="#48dbfb" />' +
+                '<circle cx="460" cy="45" r="24" fill="#fff200" />' +
+                '<path d="M0,150 Q140,110 280,145 T560,135 L560,220 L0,220 Z" fill="#2ecc71" />' +
+                '<rect x="70" y="105" width="65" height="45" fill="#d4a373" />' +
+                '<polygon points="62,105 102,75 143,105" fill="#8d5524" />' +
+                '<rect x="170" y="112" width="55" height="38" fill="#e6ccb2" />' +
+                '<polygon points="164,112 197,85 231,112" fill="#7f4f24" />' +
+                '<circle cx="320" cy="122" r="9" fill="#ffeaa7" /><rect x="312" y="132" width="16" height="28" rx="4" fill="#0984e3" />' +
+                '<circle cx="350" cy="132" r="7" fill="#ffeaa7" /><rect x="344" y="140" width="12" height="20" rx="3" fill="#ff7675" />' +
+                svgClose;
+        }
+        if (sceneId === 'burning_village') {
+            return svgOpen +
+                '<rect width="560" height="220" fill="#2d0808" />' +
+                '<polygon points="80,180 110,95 140,180" fill="#ff3f3f" opacity="0.85" />' +
+                '<polygon points="150,180 185,75 220,180" fill="#ff9f43" opacity="0.9" />' +
+                '<polygon points="360,180 400,85 440,180" fill="#ff3f3f" opacity="0.85" />' +
+                '<polygon points="280,12 330,38 316,115 244,115 230,38" fill="#ffd32a" stroke="#ff3f3f" stroke-width="3" />' +
+                '<text x="280" y="82" font-size="36" font-weight="bold" fill="#8f1111" text-anchor="middle">王</text>' +
+                svgClose;
+        }
+        if (sceneId === 'abduction') {
+            return svgOpen +
+                '<rect width="560" height="220" fill="#1a1625" />' +
+                '<line x1="120" y1="150" x2="420" y2="150" stroke="#95a5a6" stroke-width="4" stroke-dasharray="8,4" />' +
+                '<circle cx="160" cy="125" r="9" fill="#ffeaa7" /><rect x="152" y="135" width="16" height="30" fill="#636e72" />' +
+                '<circle cx="220" cy="128" r="8" fill="#ffeaa7" /><rect x="213" y="137" width="14" height="28" fill="#74b9ff" />' +
+                '<circle cx="280" cy="125" r="9" fill="#ffeaa7" /><rect x="272" y="135" width="16" height="30" fill="#b2bec3" />' +
+                '<polygon points="430,85 455,100 448,165 412,165 405,100" fill="#e74c3c" />' +
+                '<text x="430" y="140" font-size="20" font-weight="bold" fill="#fff" text-anchor="middle">兵</text>' +
+                svgClose;
+        }
+        if (sceneId === 'forced_potion') {
+            return svgOpen +
+                '<rect width="560" height="220" fill="#180d26" />' +
+                '<circle cx="280" cy="115" r="45" fill="rgba(162,155,254,0.25)" />' +
+                '<rect x="272" y="65" width="16" height="18" fill="#dfe6e9" />' +
+                '<circle cx="280" cy="112" r="28" fill="#6c5ce7" stroke="#ffffff" stroke-width="3" />' +
+                '<text x="280" y="118" font-size="16" font-weight="bold" fill="#fff" text-anchor="middle">秘薬</text>' +
+                svgClose;
+        }
+        if (sceneId === 'transformation') {
+            return svgOpen +
+                '<rect width="560" height="220" fill="#1e0b2b" />' +
+                '<circle cx="170" cy="110" r="12" fill="#a29bfe" opacity="0.6" />' +
+                '<rect x="158" y="125" width="24" height="45" fill="#a29bfe" opacity="0.6" />' +
+                '<text x="270" y="135" font-size="28" fill="#ff3f3f" text-anchor="middle">➔</text>' +
+                '<polygon points="380,75 415,95 405,170 355,170 345,95" fill="#f3c677" stroke="#ff3f3f" stroke-width="4" />' +
+                '<text x="380" y="138" font-size="30" font-weight="bold" fill="#1a1105" text-anchor="middle">歩</text>' +
+                svgClose;
+        }
+        if (sceneId === 'mother_escape') {
+            return svgOpen +
+                '<rect width="560" height="220" fill="#1a1a2e" />' +
+                '<polygon points="220,85 250,102 242,168 198,168 190,102" fill="#ff9ff3" />' +
+                '<text x="220" y="142" font-size="24" font-weight="bold" fill="#000" text-anchor="middle">母</text>' +
+                '<line x1="265" y1="130" x2="335" y2="130" stroke="#ffd32a" stroke-width="5" />' +
+                '<polygon points="380,95 405,110 398,165 362,165 355,110" fill="#fff3d1" />' +
+                '<text x="380" y="142" font-size="22" font-weight="bold" fill="#000" text-anchor="middle">歩</text>' +
+                svgClose;
+        }
+        if (sceneId === 'mother_shot') {
+            return svgOpen +
+                '<rect width="560" height="220" fill="#2b0505" />' +
+                '<polygon points="260,115 295,125 310,175 235,175 240,130" fill="#ff9ff3" opacity="0.85" />' +
+                '<text x="272" y="158" font-size="22" font-weight="bold" fill="#000" text-anchor="middle">母</text>' +
+                '<line x1="80" y1="138" x2="275" y2="145" stroke="#ff0000" stroke-width="7" />' +
+                '<circle cx="275" cy="145" r="18" fill="#ff3f3f" opacity="0.85" />' +
+                svgClose;
+        }
+        return window.buildPrologueSceneVisualPart2 ? window.buildPrologueSceneVisualPart2(sceneId, svgOpen, svgClose) : (svgOpen + svgClose);
+    };
+})();
+
+// ==============================================================================
+// 🎬📖 全16幕・動くSVGカットシーン付きプロローグ劇【2-A / 2】
+// ==============================================================================
+(function() {
+    window.activeStoryChapter = null;
+
+    // 1. ストーリー章データ（全16幕のSVGプロローグ ＋ 初心者向けチュートリアル戦）
+    window.CUSTOM_STORY_CHAPTERS = [
+        {
+            id: 'prologue',
+            num: 0,
+            title: '序章：理を変える力と王国の戦士',
+            subtitle: '全16幕の物語 〜 チュートリアル戦（VS 王国の戦士・訓練）',
+            playerChar: 'pawn',
+            stage: 1,
+            bossType: 'king2',
+            bossName: '王国の戦士（訓練）',
+            bossKanji: '玉',
+            cpuLv: 1,
+            isTutorial: true,
+            introTalk: window.PROLOGUE_16_SCENES,
+            winTalk: [
+                { scene: 'poor_bed', speaker: '王国の戦士', kanji: '玉', color: '#00d2ff', text: '「ほう……王将に敗れて海へ落ちたとは思えん良い目だ。基本の立ち回りは合格だな！」' },
+                { scene: 'poor_bed', speaker: '主人公', kanji: '歩', color: '#ffd32a', text: '「はぁ、はぁ……ありがとうございます！ もっと強くなって、必ず闇王と王将たちを倒します！」' },
+                { scene: 'poor_bed', speaker: '老人（村長）', kanji: '老', color: '#feca57', text: '「見事じゃ！ まずは第一歩を踏み出したな。さあ、次の試練へ備えるのじゃ！」' }
+            ]
+        }
+    ];
+
+    // 2. 上部に動くSVGカットシーン、下部にセリフウィンドウを表示する再生エンジン
+    window.playCustomStoryTalk = function(talkList, onFinish) {
+        const container = document.getElementById('game-container');
+        if (!container || !talkList || talkList.length === 0) {
+            if (onFinish) onFinish();
+            return;
+        }
+
+        const old = document.getElementById('custom-story-modal');
+        if (old) old.remove();
+
+        const modal = document.createElement('div');
+        modal.id = 'custom-story-modal';
+        modal.style.cssText =
+            'position:absolute; inset:0; background:rgba(5, 7, 15, 0.94); z-index:260; ' +
+            'display:flex; flex-direction:column; justify-content:space-between; align-items:center; ' +
+            'padding:10px 14px 12px 14px; box-sizing:border-box; cursor:pointer;';
+
+        let step = 0;
+
+        function drawStep() {
+            const item = talkList.at(step);
+            if (!item) {
+                modal.remove();
+                if (onFinish) onFinish();
+                return;
+            }
+
+            const isNarrator = (item.speaker === '語り');
+            const svgHtml = (item.scene && typeof window.buildPrologueSceneVisual === 'function')
+                ? window.buildPrologueSceneVisual(item.scene)
+                : '';
+
+            modal.innerHTML =
+                '<div style="width:100%; display:flex; justify-content:space-between; align-items:center;">' +
+                    '<span style="font-size:11px; color:#ffd32a; font-weight:bold;">📖 村人下剋上伝 〜序章〜</span>' +
+                    '<button type="button" id="btn-skip-story-talk" style="background:rgba(0,0,0,0.7); color:#ffd32a; border:1px solid #ffd32a; border-radius:4px; padding:3px 10px; font-size:11px; font-weight:bold; cursor:pointer;">会話をスキップ ▶▶</button>' +
+                '</div>' +
+                '<div style="width:100%; max-width:560px; height:215px; margin:4px 0; overflow:hidden; border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,0.8);">' +
+                    svgHtml +
+                '</div>' +
+                '<div style="width:100%; max-width:560px; background:linear-gradient(135deg, #1e272e, #111622); ' +
+                'border:3px solid ' + item.color + '; border-radius:10px; padding:10px 14px; ' +
+                'box-shadow:0 0 20px ' + item.color + '; display:flex; gap:12px; align-items:center;">' +
+                    (isNarrator ? '' :
+                        '<div style="flex-shrink:0; width:52px; height:62px; background:linear-gradient(180deg, #fff3d1, #c88a36); ' +
+                        'clip-path:polygon(50% 0%, 100% 24%, 86% 100%, 14% 100%, 0% 24%); ' +
+                        'display:flex; justify-content:center; align-items:center; font-size:24px; font-weight:bold; color:#1a1105;">' +
+                            item.kanji +
+                        '</div>'
+                    ) +
+                    '<div style="flex:1; text-align:left;">' +
+                        (isNarrator ? '' : '<div style="font-size:12px; font-weight:bold; color:' + item.color + '; margin-bottom:3px;">' + item.speaker + '</div>') +
+                        '<div style="font-size:13px; color:' + (isNarrator ? '#dfe6e9' : '#ffffff') + '; line-height:1.45; min-height:40px;">' + item.text + '</div>' +
+                        '<div style="text-align:right; font-size:10px; color:#ffd32a; margin-top:4px;">▼ タップして次へ (' + (step + 1) + '/' + talkList.length + ')</div>' +
+                    '</div>' +
+                '</div>';
+
+            const skipBtn = document.getElementById('btn-skip-story-talk');
+            if (skipBtn) {
+                skipBtn.onclick = (ev) => {
+                    ev.stopPropagation();
+                    modal.remove();
+                    if (onFinish) onFinish();
+                };
+            }
+        }
+
+        modal.onclick = () => {
+            if (typeof playSE === 'function') playSE('select');
+            step++;
+            drawStep();
+        };
+
+        container.appendChild(modal);
+        drawStep();
+    };
+})();
+// ==============================================================================
+// 🎬📖 全16幕・動くSVGカットシーン付きプロローグ劇【2-B / 2】
+// ==============================================================================
+(function() {
+    // 3. ストーリーモード専用スクリーン（#story-screen）生成＆遷移
+    window.openDedicatedStoryScreen = function() {
+        if (typeof playSE === 'function') playSE('select');
+        const container = document.getElementById('game-container');
+        if (!container) return;
+
+        let scrStory = document.getElementById('story-screen');
+        if (!scrStory) {
+            scrStory = document.createElement('div');
+            scrStory.id = 'story-screen';
+            scrStory.className = 'screen';
+            scrStory.style.cssText =
+                'position:absolute; inset:0; ' +
+                'background:radial-gradient(circle at 50% 20%, #2c1e4a 0%, #120d24 60%, #05050c 100%); ' +
+                'padding:14px 16px; box-sizing:border-box; display:none; flex-direction:column; z-index:40;';
+            container.appendChild(scrStory);
+        }
+
+        if (window.scrTitle) window.scrTitle.style.display = 'none';
+        if (window.scrSelect) window.scrSelect.style.display = 'none';
+        if (window.scrGame) window.scrGame.style.display = 'none';
+        if (window.scrResult) window.scrResult.style.display = 'none';
+
+        const clearedList = JSON.parse(localStorage.getItem('smash_shogi_story_cleared') || '[]');
+        let listHtml = '';
+        window.CUSTOM_STORY_CHAPTERS.forEach(ch => {
+            const isCleared = clearedList.includes(ch.id);
+            listHtml +=
+                '<div style="background:rgba(0,0,0,0.6); border:2px solid ' + (isCleared ? '#2ecc71' : '#ffd32a') + '; ' +
+                'border-radius:10px; padding:12px; margin-bottom:10px;">' +
+                    '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">' +
+                        '<span style="font-size:15px; font-weight:bold; color:#ffd32a;">' + ch.title + '</span>' +
+                        '<span style="background:#222; border:1px solid #00d2ff; color:#00d2ff; padding:2px 6px; border-radius:4px; font-size:10px; font-weight:bold;">入門・チュートリアル</span>' +
+                    '</div>' +
+                    '<div style="font-size:12px; color:#dfe6e9; margin-bottom:8px;">' + ch.subtitle + '</div>' +
+                    '<div style="display:flex; justify-content:space-between; align-items:center;">' +
+                        '<span style="font-size:11px; font-weight:bold; color:' + (isCleared ? '#2ecc71' : '#ff9f43') + ';">' +
+                            (isCleared ? '✅ クリア済み' : '🔥 未クリア') +
+                        '</span>' +
+                        '<button type="button" onclick="startStoryChapterById(\'' + ch.id + '\')" ' +
+                        'style="padding:7px 20px; font-size:13px; font-weight:bold; background:linear-gradient(135deg, #eb2f06, #ff9f43); color:#fff; border:1px solid #fff; border-radius:6px; cursor:pointer;">' +
+                            '▶ 物語を始める' +
+                        '</button>' +
+                    '</div>' +
+                '</div>';
+        });
+
+        scrStory.innerHTML =
+            '<div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #ffd32a; padding-bottom:6px; margin-bottom:10px;">' +
+                '<div>' +
+                    '<div style="font-size:10px; color:#00d2ff; letter-spacing:2px;">STORY MODE</div>' +
+                    '<div style="font-size:18px; font-weight:900; color:#ffd32a; text-shadow:0 0 10px #ff3f3f;">📖 村人下剋上伝 〜成金無双〜</div>' +
+                '</div>' +
+                '<button type="button" onclick="document.getElementById(\'story-screen\').style.display=\'none\'; goToSelectScreen();" ' +
+                'style="padding:6px 12px; font-size:11px; font-weight:bold; background:#34495e; color:#fff; border:1px solid #7f8c8d; border-radius:6px; cursor:pointer;">' +
+                    '← モード選択へ戻る' +
+                '</button>' +
+            '</div>' +
+            '<div style="background:rgba(255,211,42,0.1); border-left:3px solid #ffd32a; padding:6px 10px; font-size:11px; color:#f5cd79; margin-bottom:10px;">' +
+                '【あらすじ】闇王の『理を変える力』と謎の薬により駒へと変えられた村人たち。母の犠牲で生き延びた主人公（歩）の反撃が始まる――。' +
+            '</div>' +
+            '<div style="flex:1; overflow-y:auto;">' + listHtml + '</div>';
+
+        scrStory.style.display = 'flex';
+    };
+
+    // セレクト画面に「📖 ストーリーモード」ボタンを追加
+    function injectStoryBtn() {
+        const offlineBtn = document.getElementById('mode-offline');
+        if (!offlineBtn || document.getElementById('mode-story')) return;
+        const storyBtn = document.createElement('button');
+        storyBtn.type = 'button';
+        storyBtn.id = 'mode-story';
+        storyBtn.className = 'btn-toggle';
+        storyBtn.style.cssText = 'border-color:#ffd32a; color:#ffd32a; background:#2c1e4a;';
+        storyBtn.textContent = '📖 ストーリーモード';
+        storyBtn.onclick = () => window.openDedicatedStoryScreen();
+        offlineBtn.parentElement.appendChild(storyBtn);
+    }
+    const _origInitSel = initSelectScreen;
+    initSelectScreen = function() { _origInitSel.apply(this, arguments); injectStoryBtn(); };
+    setTimeout(injectStoryBtn, 400);
+
+    // 4. 章の開始（全16幕のSVGプロローグ ➔ 初心者向け王国の戦士チュートリアル戦）
+    window.startStoryChapterById = function(chapterId) {
+        const ch = window.CUSTOM_STORY_CHAPTERS.find(c => c.id === chapterId);
+        if (!ch) return;
+
+        const scrStory = document.getElementById('story-screen');
+        if (scrStory) scrStory.style.display = 'none';
+        window.activeStoryChapter = ch;
+
+        if (ch.playerChar) selectedCharKey = ch.playerChar;
+        selectedStage = ch.stage || 1;
+        selectedCpuType = ch.bossType || 'king2';
+        selectedCpuLevel = ch.cpuLv || 1;
+        gameMode = 'offline';
+        myRole = 'offline';
+
+        window.playCustomStoryTalk(ch.introTalk, () => {
+            executeGameStart();
+            if (ch.bossName) {
+                const eNameUi = document.getElementById('ui-e-name');
+                const eTagUi = document.getElementById('enemy-nametag');
+                if (eNameUi) eNameUi.textContent = ch.bossName;
+                if (eTagUi) eTagUi.textContent = ch.bossName;
+            }
+            if (ch.bossKanji) {
+                const eTextUi = document.getElementById('e-text');
+                if (eTextUi) eTextUi.textContent = ch.bossKanji;
+            }
+            if (ch.isTutorial && e) {
+                e.speed = 1.65;
+                e.power = 0.55;
+                e.weight = 0.72;
+                e.cooldown = 75;
+                e.isTutorialBot = true;
+            }
+        });
+    };
+
+    const _origUpdateTut = updateFrame;
+    updateFrame = function() {
+        if (e && e.isTutorialBot && window.activeStoryChapter) {
+            e.spGauge = 0;
+            if (e.cooldown === 25) e.cooldown = 65;
+        }
+        _origUpdateTut.apply(this, arguments);
+    };
+
+    const _origEndStory = endMatch;
+    endMatch = function(playerWon) {
+        const ch = window.activeStoryChapter;
+        if (!ch) { _origEndStory.apply(this, arguments); return; }
+
+        clearInterval(gameTimer);
+        gameTimer = null;
+        window.removeEventListener('keydown', handleKeyDown);
+        window.removeEventListener('keyup', handleKeyUp);
+        resetAllKeyStates();
+        const overlay = document.getElementById('touch-pad-overlay');
+        if (overlay) overlay.style.display = 'none';
+        const recPanel = document.getElementById('record-control-panel');
+        if (recPanel) recPanel.style.display = 'none';
+        window.activeStoryChapter = null;
+
+        if (playerWon) {
+            let cleared = JSON.parse(localStorage.getItem('smash_shogi_story_cleared') || '[]');
+            if (!cleared.includes(ch.id)) {
+                cleared.push(ch.id);
+                localStorage.setItem('smash_shogi_story_cleared', JSON.stringify(cleared));
+            }
+            window.playCustomStoryTalk(ch.winTalk, () => { window.openDedicatedStoryScreen(); });
+        } else {
+            alert('【訓練失敗…】もう一度「王国の戦士」の訓練に挑戦しよう！');
+            window.openDedicatedStoryScreen();
+        }
+    };
+})();
+// ==============================================================================
+// 👾✨ 全16幕・高精細ハイディテール・ドット絵エンジン【第1回 / 6：人間スプライト】
+// ==============================================================================
+(function() {
+    window.HI_PALETTE = {
+        '.': null,
+        'K': '#0d0d12', // 輪郭（濃紺黒）
+        'S': '#ffdbac', // 肌（ベース）
+        's': '#e0ac69', // 肌（影）
+        'E': '#1a1a2e', // 瞳
+        'W': '#ffffff', // 白（白髪・ハイライト・瞳の光）
+        'g': '#bdc3c7', // 銀灰（白髪の影・鉄の槍先）
+        'H': '#5c3818', // 茶髪（ベース）
+        'h': '#3b220c', // 茶髪（影）
+        'B': '#2980b9', // 青服（主人公ベース）
+        'b': '#1a5276', // 青服（影）
+        'P': '#e84393', // 桃服（母親ベース）
+        'p': '#a32663', // 桃服（影）
+        'G': '#f1c40f', // 黄金・村長の服
+        'd': '#b7950b', // 黄金（影）
+        'R': '#e74c3c', // 深紅（王将マント・炎）
+        'r': '#922b21', // 深紅（影）
+        'Y': '#f5cd79', // 木製将棋駒（明るい面）
+        'y': '#c88a36', // 木製将棋駒（影面）
+        'T': '#7e5109', // ズボン・木の柄
+        'V': '#8e44ad'  // 紫の秘薬・闇オーラ
+    };
+
+    window.HI_SPRITES_24x32 = {
+        // 1. 主人公（人間時代・少年）
+        boy: [
+            '........KKKKKKKK........',
+            '......KKHHHHHHHHKK......',
+            '.....KHHHHHHHHHHHHK.....',
+            '....KHHHHHhhhhHHHHHK....',
+            '...KHHHHhhKKKKhhHHHHK...',
+            '...KHHhhSSSSSSSShhHHK...',
+            '..KHHhSSSSSSSSSSSShHHK..',
+            '..KHhSSWEEssssEEWSShHK..',
+            '..KHSSSWEEssssEEWSSSHK..',
+            '...KSSSSSSSSSSSSSSSSK...',
+            '...KssssSSSSSSSSssssK...',
+            '....KsssssKKKKsssssK....',
+            '.....KKssssssssssKK.....',
+            '....KKKBBBBBBBBBBKKK....',
+            '...KBBBBBBBBBBBBBBBBK...',
+            '..KSBBBBBBBBBBBBBBBBSK..',
+            '..KSSBBBBBBBBBBBBBBSSK..',
+            '..KssBBBBBBBBBBBBBBssK..',
+            '...KKBBBBBBBBBBBBBBKK...',
+            '....KbbbbBBBBBBbbbbK....',
+            '....KGGGGGGGGGGGGGGK....',
+            '....KTTTTTTTTTTTTTTK....',
+            '....KTTTTTTKKTTTTTTK....',
+            '....KTTTTTK..KTTTTTK....',
+            '....KTTTTTK..KTTTTTK....',
+            '....KTTTTTK..KTTTTTK....',
+            '...KKhhhhhK..KhhhhhKK...',
+            '..KhhhhhhhK..KhhhhhhhK..',
+            '..KKKKKKKKK..KKKKKKKKK..',
+            '........................',
+            '........................',
+            '........................'
+        ],
+        // 2. 母親（優しい表情・エプロン姿）
+        mom: [
+            '.......KKKKKKKKKK.......',
+            '.....KKHHHHHHHHHHKK.....',
+            '....KHHHHHHHHHHHHHHK....',
+            '...KHHHHHhhhhhhHHHHHK...',
+            '..KHHHHhhSSSSSShhHHHHK..',
+            '..KHHHSSSSSSSSSSSSHHHK..',
+            '..KHHSSWEEssssEEWSSHHK..',
+            '..KHHSSWEEssssEEWSSHHK..',
+            '..KHHSSSSSSSSSSSSSSHHK..',
+            '..KHHsssssKKKKsssssHHK..',
+            '...KKHssssssssssssHKK...',
+            '....KKPPPPPPPPPPPPKK....',
+            '...KPPPPPPPPPPPPPPPPK...',
+            '..KSPPPPPWWWWWWPPPPPSK..',
+            '..KSPPPPPWWWWWWPPPPPSK..',
+            '..KssPPPPWWWWWWPPPPssK..',
+            '...KKPPPPWWWWWWPPPPKK...',
+            '....KppppWWWWWWppppK....',
+            '....KPPPPWWWWWWPPPPK....',
+            '...KPPPPPPPPPPPPPPPPK...',
+            '...KppppPPPPPPPPppppK...',
+            '..KPPPPPPPPPPPPPPPPPPK..',
+            '..KppppPPPPPPPPPPPPppK..',
+            '...KKKKKKKKKKKKKKKKKK...',
+            '.....KTTTTK..KTTTTK.....',
+            '....KhhhhhK..KhhhhhK....',
+            '....KKKKKKK..KKKKKKK....',
+            '........................',
+            '........................',
+            '........................',
+            '........................',
+            '........................'
+        ],
+        // 3. 老人（村長・長い白ひげと威厳あるローブ）
+        elder: [
+            '........KKKKKKKK........',
+            '......KKWWWWWWWWKK......',
+            '.....KWWWWWWWWWWWWK.....',
+            '....KWWWWggggggWWWWK....',
+            '...KWWWggSSSSSSggWWWK...',
+            '...KWWgSSSSSSSSSSgWWK...',
+            '...KWSSgEEssssEEgSSWK...',
+            '...KWSSSSSSSSSSSSSSWK...',
+            '...KWssssWWWWWWssssWK...',
+            '....KsssWWWWWWWWsssK....',
+            '....KssWWWWWWWWWWssK....',
+            '.....KKWWWWWWWWWWKK.....',
+            '....KGGWWWWWWWWWWGGK....',
+            '...KGGGGWWWWWWWWGGGGK...',
+            '..KSGGGGGWWWWWWGGGGGSK..',
+            '..KSGGGGGGWWWWGGGGGGSK..',
+            '..KssGGGGGGWWGGGGGGssK..',
+            '...KKGGGGGGGGGGGGGGKK...',
+            '....KddddGGGGGGddddK....',
+            '....KGGGGGGGGGGGGGGK....',
+            '...KGGGGGGGGGGGGGGGGK...',
+            '...KddddGGGGGGGGddddK...',
+            '...KGGGGGGGGGGGGGGGGK...',
+            '....KKKKKKKKKKKKKKKK....',
+            '.....KTTTTK..KTTTTK.....',
+            '....KhhhhhK..KhhhhhK....',
+            '....KKKKKKK..KKKKKKK....',
+            '........................',
+            '........................',
+            '........................',
+            '........................',
+            '........................'
+        ],
+        // 4. 集落の村人（ボロ服・怯えた顔）
+        villager: [
+            '........KKKKKKKK........',
+            '......KKhhhhhhhhKK......',
+            '.....KhhhhhhhhhhhhK.....',
+            '....KhhhhSSSSSShhhhK....',
+            '...KhhhSSSSSSSSSShhhK...',
+            '...KhhSSWEEssEEWSShhK...',
+            '...KhhSSSSSSSSSSSShhK...',
+            '....KsssssKKKKsssssK....',
+            '.....KKssssssssssKK.....',
+            '....KTTTTTTTTTTTTTTK....',
+            '...KTTTTTTTTTTTTTTTTK...',
+            '..KSTTTTTTbbbbTTTTTTSK..',
+            '..KSTTTTTTTTTTTTTTTTSK..',
+            '...KKTTTTTTTTTTTTTTKK...',
+            '....KhhhhTTTTTThhhhK....',
+            '....KTTTTTTTTTTTTTTK....',
+            '....KTTTTTTKKTTTTTTK....',
+            '....KTTTTTK..KTTTTTK....',
+            '....KTTTTTK..KTTTTTK....',
+            '...KKhhhhhK..KhhhhhKK...',
+            '..KKKKKKKKK..KKKKKKKKK..',
+            '........................',
+            '........................',
+            '........................',
+            '........................',
+            '........................',
+            '........................',
+            '........................',
+            '........................',
+            '........................',
+            '........................',
+            '........................'
+        ]
+    };
+})();
+
+// ==============================================================================
+// 👾✨ 全16幕・高精細ハイディテール・ドット絵エンジン【第2回 / 6：将棋駒スプライト】
+// ==============================================================================
+(function() {
+    // 5. 将棋駒（主人公・歩／木目と彫り込み文字）
+    window.HI_SPRITES_24x32.piece_pawn = [
+        '...........KK...........',
+        '..........KYYK..........',
+        '.........KYYYYK.........',
+        '........KYYYYYYK........',
+        '.......KYYYYYYYYK.......',
+        '......KYYYYYYYYYYK......',
+        '.....KYYYYYYYYYYYYK.....',
+        '....KYYYYYYKKYYYYYYK....',
+        '....KYYYYYYKKYYYYYYK....',
+        '...KYYYYYYYKKYYYYYYYK...',
+        '...KYYYYYYYKKKKKYYYYK...',
+        '...KYYYYYYYKKYYYYYYYK...',
+        '..KYYYYKKKKKKYYYYYYYYK..',
+        '..KYYYYKKYYKKYYYYYYYYK..',
+        '..KYYYYKKYYKKYYYYYYYYK..',
+        '..KYYYYYYYYKKYYYYYYYYK..',
+        '..KYYYYYYYYKKYYYYYYYYK..',
+        '.KYYYYYYYKKKKKYYYYYYYYK.',
+        '.KYYYYYYKKYYYKKYYYYYYYK.',
+        '.KYYYYYKKYYYYYKKYYYYYYK.',
+        '.KYYYYKKYYYYYYYKKYYYYYK.',
+        '.KyyyyyyyyyyyyyyyyyyyyK.',
+        '.KyyyyyyyyyyyyyyyyyyyyK.',
+        '..KKKKKKKKKKKKKKKKKKKK..',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................'
+    ];
+
+    // 6. 将棋駒（母親・ピンク木目の駒）
+    window.HI_SPRITES_24x32.piece_mom = [
+        '...........KK...........',
+        '..........KPPK..........',
+        '.........KPPPPK.........',
+        '........KPPPPPPK........',
+        '.......KPPPPPPPPK.......',
+        '......KPPPPPPPPPPK......',
+        '.....KPPPPPPPPPPPPK.....',
+        '....KPPPPKKKKKKPPPPK....',
+        '....KPPPPKPPPPKPPPPK....',
+        '...KPPPPPKKPPKKPPPPPK...',
+        '...KPPPPKKKKKKKKPPPPK...',
+        '...KPPPPPKKPPKKPPPPPK...',
+        '..KPPPPPPKPPPPKPPPPPPK..',
+        '..KPPPPPPKKKKKKPPPPPPK..',
+        '..KPPPPPPPPPPPPPPPPPPK..',
+        '.KppppppppppppppppppppK.',
+        '.KppppppppppppppppppppK.',
+        '..KKKKKKKKKKKKKKKKKKKK..',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................'
+    ];
+
+    // 7. 巨大な王将（黄金の駒＋深紅のマントオーラ）
+    window.HI_SPRITES_24x32.piece_king = [
+        '...........KK...........',
+        '..........KGGK..........',
+        '.........KGGGGK.........',
+        '........KGGGGGGK........',
+        '.......KGGGGGGGGK.......',
+        '......KGGGGGGGGGGK......',
+        '.....KGGGGGGGGGGGGK.....',
+        '....KGGGGKKKKKKGGGGK....',
+        '....KGGGGGGKKGGGGGGK....',
+        '...KGGGGGGGKKGGGGGGGK...',
+        '...KGGGGKKKKKKKKGGGGK...',
+        '...KGGGGGGGKKGGGGGGGK...',
+        '..KGGGGGGGGKKGGGGGGGGK..',
+        '..KGGGGGGGGKKGGGGGGGGK..',
+        '..KGGGKKKKKKKKKKKKGGGK..',
+        '.KGGGGGGGGGGGGGGGGGGGGK.',
+        '.KRRRRRRRRRRRRRRRRRRRRK.',
+        '.KrrrRRRRRRRRRRRRRRrrrK.',
+        '.KrrrRRRRRRRRRRRRRRrrrK.',
+        '.KddddddddddddddddddddK.',
+        '..KKKKKKKKKKKKKKKKKKKK..',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................'
+    ];
+
+    // 24x32高精細スプライト描画関数
+    window.drawHiPixelSprite = function(ctx, key, ox, oy, scale = 1, flipX = false, rotDeg = 0) {
+        const rows = window.HI_SPRITES_24x32[key];
+        if (!rows) return;
+        ctx.save();
+        ctx.translate(Math.round(ox), Math.round(oy));
+        if (rotDeg !== 0) ctx.rotate((rotDeg * Math.PI) / 180);
+        if (flipX) ctx.scale(-1, 1);
+
+        for (let r = 0; r !== rows.length; r++) {
+            const line = rows.at(r);
+            for (let c = 0; c !== line.length; c++) {
+                const col = window.HI_PALETTE[line.charAt(c)];
+                if (col) {
+                    ctx.fillStyle = col;
+                    ctx.fillRect((c - 12) * scale, (r - 16) * scale, scale, scale);
+                }
+            }
+        }
+        ctx.restore();
+    };
+})();
+
+// ==============================================================================
+// 👾✨ 全16幕・高精細ハイディテール・ドット絵エンジン【第3回 / 6：前半8シーン描画】
+// ==============================================================================
+(function() {
+    window.renderHiPixelScenePart1 = function(ctx, sceneId, tick) {
+        const W = 320, H = 126;
+
+        if (sceneId === 'peaceful_village') {
+            // 青空・流れる白いドット雲・太陽・緑の丘・木造の民家・親子の会話
+            ctx.fillStyle = '#38ada9'; ctx.fillRect(0, 0, W, 82);
+            ctx.fillStyle = '#78e08f'; ctx.fillRect(0, 50, W, 32);
+            ctx.fillStyle = '#f6b93b'; ctx.fillRect(265, 14, 16, 16);
+            ctx.fillStyle = '#fad390'; ctx.fillRect(267, 16, 12, 12);
+
+            const cloudX = Math.floor((tick * 0.4) % 340) - 20;
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(cloudX, 18, 28, 6); ctx.fillRect(cloudX + 6, 14, 16, 4);
+
+            // 草原の丘
+            ctx.fillStyle = '#218c74'; ctx.fillRect(0, 82, W, 44);
+            ctx.fillStyle = '#33d9b2'; ctx.fillRect(0, 82, W, 4);
+
+            // 素朴な村の家（2軒）
+            ctx.fillStyle = '#cc8e35'; ctx.fillRect(36, 56, 42, 26);
+            ctx.fillStyle = '#845824'; ctx.fillRect(32, 48, 50, 8); ctx.fillRect(40, 42, 34, 6);
+            ctx.fillStyle = '#2c3e50'; ctx.fillRect(52, 66, 10, 16);
+
+            ctx.fillStyle = '#d1ccc0'; ctx.fillRect(96, 62, 34, 20);
+            ctx.fillStyle = '#704214'; ctx.fillRect(92, 55, 42, 7);
+
+            // 主人公（少年）と母親が微笑み合う
+            const bob = Math.floor(Math.sin(tick * 0.15) * 1.5);
+            window.drawHiPixelSprite(ctx, 'boy', 195, 76 + bob, 1.4, false, 0);
+            window.drawHiPixelSprite(ctx, 'mom', 230, 74 - bob, 1.45, true, 0);
+            return true;
+        }
+
+        if (sceneId === 'burning_village') {
+            // 赤黒い夜空・燃え盛る炎のドット・上空に降臨する巨大な王将
+            ctx.fillStyle = '#1e0505'; ctx.fillRect(0, 0, W, 86);
+            ctx.fillStyle = '#3d0c02'; ctx.fillRect(0, 86, W, 40);
+
+            // 燃える家のシルエットと揺らめくドット炎
+            ctx.fillStyle = '#111111'; ctx.fillRect(35, 58, 44, 28); ctx.fillRect(235, 62, 40, 24);
+            for (let i = 0; i !== 18; i++) {
+                const fx = 20 + i * 16;
+                const fh = 14 + Math.floor(Math.sin(tick * 0.4 + i) * 8);
+                ctx.fillStyle = (i % 2 === 0) ? '#eb2f06' : '#fa983a';
+                ctx.fillRect(fx, 86 - fh, 10, fh);
+                ctx.fillStyle = '#f6e58d';
+                ctx.fillRect(fx + 3, 86 - Math.floor(fh * 0.6), 4, Math.floor(fh * 0.6));
+            }
+
+            // 上空に降臨する巨大な王将
+            const hoverY = 44 + Math.floor(Math.sin(tick * 0.2) * 3);
+            ctx.fillStyle = 'rgba(235, 47, 6, 0.35)';
+            ctx.fillRect(130, hoverY - 26, 60, 52);
+            window.drawHiPixelSprite(ctx, 'piece_king', 160, hoverY, 2.1, false, 0);
+            return true;
+        }
+
+        if (sceneId === 'abduction') {
+            // 荒野の夜道・鎖で繋がれて連行される村人たち
+            ctx.fillStyle = '#130f40'; ctx.fillRect(0, 0, W, 88);
+            ctx.fillStyle = '#2f3542'; ctx.fillRect(0, 88, W, 38);
+
+            const walk = Math.floor(Math.sin(tick * 0.25) * 2);
+            // 鎖のドットライン
+            ctx.fillStyle = '#95a5a6';
+            for (let cx = 65; cx !== 215; cx += 6) {
+                ctx.fillRect(cx, 82, 3, 2);
+            }
+            window.drawHiPixelSprite(ctx, 'boy', 80, 78 + walk, 1.35, false, 0);
+            window.drawHiPixelSprite(ctx, 'mom', 125, 76 - walk, 1.4, false, 0);
+            window.drawHiPixelSprite(ctx, 'villager', 170, 78 + walk, 1.35, false, 0);
+            // 監視する王将兵
+            window.drawHiPixelSprite(ctx, 'piece_king', 245, 72, 1.7, true, 0);
+            return true;
+        }
+
+        if (sceneId === 'forced_potion') {
+            // 怪しく光る紫の秘薬瓶のクローズアップ
+            ctx.fillStyle = '#180929'; ctx.fillRect(0, 0, W, H);
+            const pulse = Math.floor(Math.sin(tick * 0.3) * 4);
+            ctx.fillStyle = 'rgba(142, 68, 173, 0.3)';
+            ctx.fillRect(120 - pulse, 25 - pulse, 80 + pulse * 2, 80 + pulse * 2);
+
+            // ドット絵の薬瓶
+            ctx.fillStyle = '#dfe6e9'; ctx.fillRect(152, 26, 16, 12);
+            ctx.fillStyle = '#8e44ad'; ctx.fillRect(140, 38, 40, 52);
+            ctx.fillStyle = '#be2edd'; ctx.fillRect(144, 44, 32, 40);
+            // 泡のアニメーション
+            const bubbleY = 76 - (tick % 30);
+            ctx.fillStyle = '#ffffff'; ctx.fillRect(156, bubbleY, 4, 4); ctx.fillRect(164, bubbleY + 8, 3, 3);
+            return true;
+        }
+
+        if (sceneId === 'transformation') {
+            // 紫の稲妻の中で人間（少年）から将棋駒（歩）へ変身！
+            ctx.fillStyle = '#1e0b36'; ctx.fillRect(0, 0, W, 92);
+            ctx.fillStyle = '#2c2c54'; ctx.fillRect(0, 92, W, 34);
+
+            const flash = (tick % 8 === 0 || tick % 8 === 1);
+            if (flash) {
+                ctx.fillStyle = '#a29bfe';
+                ctx.fillRect(158, 10, 4, 85);
+            }
+            // 左に薄れる人間の影、右に凶暴な赤いオーラを纏う「歩」
+            ctx.globalAlpha = 0.45;
+            window.drawHiPixelSprite(ctx, 'boy', 105, 78, 1.4, false, 0);
+            ctx.globalAlpha = 1.0;
+
+            ctx.fillStyle = '#ff3f3f';
+            ctx.fillRect(188, 66, 6, 4); ctx.fillRect(216, 66, 6, 4);
+            window.drawHiPixelSprite(ctx, 'piece_pawn', 205, 80, 1.65, false, 0);
+            return true;
+        }
+
+        if (sceneId === 'mother_escape') {
+            // 母の駒が主人公（歩）を突き飛ばして逃がすシーン
+            ctx.fillStyle = '#130f40'; ctx.fillRect(0, 0, W, 92);
+            ctx.fillStyle = '#30336b'; ctx.fillRect(0, 92, W, 34);
+
+            window.drawHiPixelSprite(ctx, 'piece_mom', 115, 80, 1.65, false, 15);
+            // 衝撃波のドット線
+            ctx.fillStyle = '#ffd32a';
+            ctx.fillRect(142, 68, 24, 3); ctx.fillRect(146, 78, 20, 3);
+            const dash = Math.min(40, tick * 2);
+            window.drawHiPixelSprite(ctx, 'piece_pawn', 185 + dash, 78, 1.55, false, 12);
+            return true;
+        }
+
+        if (sceneId === 'mother_shot') {
+            // 母親が後ろから心臓を撃たれて倒れる衝撃のカット
+            ctx.fillStyle = '#2b0404'; ctx.fillRect(0, 0, W, 92);
+            ctx.fillStyle = '#1e1e24'; ctx.fillRect(0, 92, W, 34);
+
+            // 倒れ込む母親の駒
+            window.drawHiPixelSprite(ctx, 'piece_mom', 175, 88, 1.65, false, 68);
+            // 背後から心臓を貫く深紅の矢・光線
+            ctx.fillStyle = '#ff0000';
+            ctx.fillRect(45, 74, 130, 5);
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(45, 76, 130, 2);
+            // 飛び散る赤いドットパーティクル
+            ctx.fillStyle = '#ff3f3f';
+            ctx.fillRect(182, 66, 5, 5); ctx.fillRect(194, 72, 4, 4); ctx.fillRect(188, 82, 6, 4);
+            return true;
+        }
+
+        if (sceneId === 'challenge_king') {
+            // 怒りの黄金オーラで覚醒した主人公（歩）が巨大な王将へ飛びかかる！
+            ctx.fillStyle = '#1b0c2e'; ctx.fillRect(0, 0, W, 92);
+            ctx.fillStyle = '#2c2c54'; ctx.fillRect(0, 92, W, 34);
+
+            const auraR = 24 + Math.floor(Math.sin(tick * 0.4) * 4);
+            ctx.fillStyle = 'rgba(255, 211, 42, 0.35)';
+            ctx.fillRect(105 - auraR, 68 - auraR, auraR * 2, auraR * 2);
+
+            window.drawHiPixelSprite(ctx, 'piece_pawn', 105, 68, 1.65, false, 22);
+            window.drawHiPixelSprite(ctx, 'piece_king', 225, 70, 2.2, true, 0);
+            return true;
+        }
+
+        return false;
+    };
+})();
+
+// ==============================================================================
+// 👾✨ 全16幕・高精細ハイディテール・ドット絵エンジン【第4回 / 6：後半8シーン描画】
+// ==============================================================================
+(function() {
+    window.renderHiPixelScenePart2 = function(ctx, sceneId, tick) {
+        const W = 320, H = 126;
+
+        if (sceneId === 'fall_into_sea') {
+            // 崖から吹き飛ばされ、荒れ狂う夜の海へ落下するシーン
+            ctx.fillStyle = '#0a1128'; ctx.fillRect(0, 0, W, 90);
+            // 断崖絶壁
+            ctx.fillStyle = '#2f3640'; ctx.fillRect(0, 32, 72, 94);
+            ctx.fillStyle = '#576574'; ctx.fillRect(0, 32, 72, 4);
+
+            // 荒れ狂う波のドットアニメーション
+            ctx.fillStyle = '#0984e3'; ctx.fillRect(72, 92, 248, 34);
+            ctx.fillStyle = '#74b9ff';
+            for (let wx = 76; wx !== 316; wx += 24) {
+                const wy = 90 + Math.floor(Math.sin(tick * 0.3 + wx * 0.1) * 3);
+                ctx.fillRect(wx, wy, 14, 3);
+            }
+
+            // 回転しながら海へ落下する主人公（歩）
+            const fallY = 48 + Math.min(44, tick * 1.2);
+            const rot = (tick * 12) % 360;
+            window.drawHiPixelSprite(ctx, 'piece_pawn', 185, fallY, 1.5, false, rot);
+            return true;
+        }
+
+        if (sceneId === 'washed_ashore') {
+            // 1週間後、朝日が昇る小さな島の砂浜に打ち上げられた主人公
+            ctx.fillStyle = '#e58e26'; ctx.fillRect(0, 0, W, 55);
+            ctx.fillStyle = '#f6b93b'; ctx.fillRect(0, 35, W, 30);
+            // 水平線から昇る朝日
+            ctx.fillStyle = '#fff200'; ctx.fillRect(245, 42, 24, 24);
+            // 青い海と波打ち際
+            ctx.fillStyle = '#00a8ff'; ctx.fillRect(0, 65, W, 24);
+            ctx.fillStyle = '#ffffff';
+            const foamX = Math.floor(Math.sin(tick * 0.15) * 4);
+            ctx.fillRect(0, 87 + foamX, W, 2);
+            // 砂浜
+            ctx.fillStyle = '#f5cd79'; ctx.fillRect(0, 89, W, 37);
+            ctx.fillStyle = '#d1a354'; ctx.fillRect(0, 108, W, 18);
+
+            // 砂浜に横たわる傷だらけの「歩」
+            window.drawHiPixelSprite(ctx, 'piece_pawn', 135, 98, 1.55, false, 84);
+            return true;
+        }
+
+        if (sceneId === 'spears_pointed') {
+            // 集落の村人たちに貧相な木の槍を向けられるシーン
+            ctx.fillStyle = '#1e272e'; ctx.fillRect(0, 0, W, 92);
+            ctx.fillStyle = '#6c5ce7'; ctx.fillRect(0, 0, W, 18); // 夜明け前の空
+            ctx.fillStyle = '#7e5109'; ctx.fillRect(0, 92, W, 34);
+
+            // 起き上がった主人公（歩）
+            window.drawHiPixelSprite(ctx, 'piece_pawn', 85, 80, 1.55, false, 0);
+
+            // 貧相な木の槍を構えて怯える村人たち（2人）
+            const shake = Math.floor(Math.sin(tick * 0.5) * 1.5);
+            window.drawHiPixelSprite(ctx, 'villager', 205, 76, 1.4, true, 0);
+            window.drawHiPixelSprite(ctx, 'villager', 245, 78, 1.35, true, 0);
+
+            // 貧相な木の槍（棒＋小さな鉄先）
+            ctx.fillStyle = '#b88438';
+            ctx.fillRect(132 + shake, 74, 78, 3);
+            ctx.fillRect(155 - shake, 80, 88, 3);
+            ctx.fillStyle = '#bdc3c7';
+            ctx.fillRect(126 + shake, 73, 6, 5);
+            ctx.fillRect(149 - shake, 79, 6, 5);
+            return true;
+        }
+
+        if (sceneId === 'chief_stops' || sceneId === 'explain_truth' || sceneId === 'faint_away') {
+            // 村長（老人）が間に立って制止 ➔ 事情を話す ➔ 気絶する
+            const isFaint = (sceneId === 'faint_away');
+            ctx.fillStyle = isFaint ? '#090910' : '#1e272e'; ctx.fillRect(0, 0, W, 92);
+            ctx.fillStyle = '#7e5109'; ctx.fillRect(0, 92, W, 34);
+
+            // 村長（老人）と木の杖
+            window.drawHiPixelSprite(ctx, 'elder', 165, 74, 1.45, true, 0);
+            ctx.fillStyle = '#8d5524'; ctx.fillRect(146, 54, 3, 44);
+            ctx.fillStyle = '#ffd32a'; ctx.fillRect(145, 51, 5, 4);
+
+            // 後ろで見守る村人
+            window.drawHiPixelSprite(ctx, 'villager', 225, 76, 1.35, true, 0);
+
+            // 主人公（気絶シーンでは倒れ込む）
+            const rot = isFaint ? -75 : 0;
+            const py = isFaint ? 92 : 80;
+            window.drawHiPixelSprite(ctx, 'piece_pawn', 95, py, 1.55, false, rot);
+            return true;
+        }
+
+        // poor_bed / elder_talk_1〜4（薄暗い小屋の貧相なベッドと老人との会話）
+        ctx.fillStyle = '#14100d'; ctx.fillRect(0, 0, W, H);
+        // 木の柱と壁の板張り
+        ctx.fillStyle = '#2c1e14'; ctx.fillRect(0, 0, W, 96);
+        ctx.fillStyle = '#1f150e';
+        for (let wx = 0; wx !== W; wx += 32) { ctx.fillRect(wx, 0, 2, 96); }
+        // 小さな木の窓と月明かり
+        ctx.fillStyle = '#192a56'; ctx.fillRect(36, 20, 34, 32);
+        ctx.fillStyle = '#5e3608'; ctx.fillRect(34, 18, 38, 3); ctx.fillRect(34, 52, 38, 3);
+        ctx.fillRect(52, 20, 2, 32); ctx.fillRect(36, 35, 34, 2);
+
+        // 床板
+        ctx.fillStyle = '#4a3222'; ctx.fillRect(0, 96, W, 30);
+
+        // 貧相な木のベッド（藁布団＋つぎはぎ毛布）
+        ctx.fillStyle = '#5e3608';
+        ctx.fillRect(75, 86, 96, 8);   // ベッド枠
+        ctx.fillRect(78, 94, 6, 16);   // 左脚
+        ctx.fillRect(162, 94, 6, 16);  // 右脚
+        ctx.fillStyle = '#c8a97e';
+        ctx.fillRect(78, 80, 90, 6);   // 藁の敷布団
+        ctx.fillStyle = '#576574';
+        ctx.fillRect(112, 78, 54, 8);  // 粗末な毛布
+
+        // ベッドの上で起き上がった主人公（歩）
+        window.drawHiPixelSprite(ctx, 'piece_pawn', 105, 66, 1.5, false, 0);
+
+        // ベッドの横で語る老人（村長）
+        const nod = Math.floor(Math.sin(tick * 0.2) * 1);
+        window.drawHiPixelSprite(ctx, 'elder', 215, 78 + nod, 1.5, true, 0);
+        ctx.fillStyle = '#8d5524'; ctx.fillRect(195, 58, 3, 46);
+        ctx.fillStyle = '#ffd32a'; ctx.fillRect(194, 55, 5, 4);
+        return true;
+    };
+})();
+
+// ==============================================================================
+// 👾✨ 全16幕・高精細ハイディテール・ドット絵エンジン【第5回 / 6：シナリオ＆再生UI】
+// ==============================================================================
+(function() {
+    window.activeStoryChapter = null;
+    window.pixelCutsceneAnimId = null;
+
+    // 1. 全16幕の物語データ（あなたのシナリオ完全再現）
+    window.PROLOGUE_16_SCENES = [
+        { scene: 'peaceful_village', speaker: '語り', kanji: '記', color: '#2ecc71', text: '将棋の駒は、元々は平和な村で暮らすただの人間（村人）だった――。' },
+        { scene: 'burning_village',  speaker: '襲撃者・王将', kanji: '王', color: '#ff3f3f', text: '「ここが最後か……」――ある日、王将たちの襲撃により平和な村は炎に包まれた！' },
+        { scene: 'abduction',        speaker: '語り', kanji: '記', color: '#ff9f43', text: '抵抗も虚しく、村人たちは全員連れ去られてしまう。もちろん、主人公も。' },
+        { scene: 'forced_potion',    speaker: '王将の兵', kanji: '兵', color: '#a29bfe', text: '「大人しくこれを飲め！」――連行の途中、みんなは怪しく光る紫の薬を飲まされる！' },
+        { scene: 'transformation',   speaker: '語り', kanji: '記', color: '#a29bfe', text: '数分後、体が激しい痛みと共に将棋の駒へと変わっていく！みんなが駒になるにつれて凶暴になっていく……！' },
+        { scene: 'mother_escape',    speaker: '母', kanji: '母', color: '#ff9ff3', text: '「お願い……理性を保って、逃げて……！！」――自分も駒になり理性を失いかけたその時、母親が残った理性で自分を逃がした！' },
+        { scene: 'mother_shot',      speaker: '語り', kanji: '記', color: '#ff3f3f', text: 'だが、逃がした直後――母親は後ろから心臓を撃たれて倒れてしまう……！！' },
+        { scene: 'challenge_king',   speaker: '主人公', kanji: '歩', color: '#ffd32a', text: '「母さん……っ！！ 許さない……許さないぞ王将！！」――母の死を見たことで覚醒し、王将に襲いかかる！' },
+        { scene: 'fall_into_sea',    speaker: '襲撃者・王将', kanji: '王', color: '#ff3f3f', text: '「もう死んだだろ」――だがあっけなく敗れ、そのまま荒れ狂う海へと落ちてしまう……。' },
+        { scene: 'washed_ashore',    speaker: '語り', kanji: '記', color: '#00d2ff', text: '1週間後、主人公は小さな島に流れ着いていた。「ここが最後か」という王将の言葉に希望はなかったが、そこは生き残りたちが作った集落だった。' },
+        { scene: 'spears_pointed',   speaker: '集落の村人', kanji: '村', color: '#e17055', text: '「ひぃっ！ 駒の化け物だ！ 近づくな！」――集落の人たちに貧相な木の槍を向けられる。村人たちは怯えている。' },
+        { scene: 'chief_stops',      speaker: '村長', kanji: '長', color: '#feca57', text: '「待て、全員槍を下げよ！ 様子がおかしい、我々に襲いかかる気はないようじゃ」――村長に止められる。' },
+        { scene: 'explain_truth',    speaker: '主人公', kanji: '歩', color: '#ffd32a', text: '「そうだ、俺は駒になっていたんだ……」――集落の人たちに事情を説明するうち、今までのすべてを思い出す。はらわたが煮えくり返るほどの思いだった。' },
+        { scene: 'faint_away',       speaker: '主人公', kanji: '歩', color: '#ff9f43', text: '「今すぐにでも復讐に行く！」と食い下がるも、「今のお前では勝てない」と言われ――怒りと限界で視界がかすみ、気絶してしまう……。' },
+        { scene: 'poor_bed',         speaker: '主人公', kanji: '歩', color: '#dfe6e9', text: '―――――― 目を開けると、自分は粗末で貧相なベッドに入っていた。「すぐに行かなければいけないのに何をしているんだ……」' },
+        { scene: 'elder_talk_1',     speaker: '老人（村長）', kanji: '老', color: '#feca57', text: '「お主が闇王の支配から逃れた者か……」「闇王……？」' },
+        { scene: 'elder_talk_2',     speaker: '老人（村長）', kanji: '老', color: '#feca57', text: '「そうじゃ、この世界がおかしくなったのはすべて闇王のせいじゃ。闇王は貪欲に力を求め、ついには禁忌とされる『理を変える力』を手に入れてしもうた。この世界は奴にとって単なる暇つぶしでしかないじゃろう……」' },
+        { scene: 'elder_talk_3',     speaker: '主人公', kanji: '歩', color: '#ffd32a', text: '「あいつは、お遊びで母さんたちを……」――怒りで正気を失いそうになりながらその感情を押さえつけた。' },
+        { scene: 'elder_talk_4',     speaker: '老人（村長）', kanji: '老', color: '#feca57', text: '「そこでじゃ！ おぬしをこの村一番の戦士（同じく駒にされた王国の戦士）に鍛えてもらうことにする！ 訓練は相当厳しいぞい！ それでもやるか？」「はい！！」＜チュートリアル開始＞' }
+    ];
+
+    window.CUSTOM_STORY_CHAPTERS = [
+        {
+            id: 'prologue',
+            num: 0,
+            title: '序章：理を変える力と王国の戦士',
+            subtitle: '高精細ドット絵プロローグ 〜 チュートリアル戦（VS 王国の戦士・訓練）',
+            playerChar: 'pawn',
+            stage: 1,
+            bossType: 'king2',
+            bossName: '王国の戦士（訓練）',
+            bossKanji: '玉',
+            cpuLv: 1,
+            isTutorial: true,
+            introTalk: window.PROLOGUE_16_SCENES,
+            winTalk: [
+                { scene: 'poor_bed', speaker: '王国の戦士', kanji: '玉', color: '#00d2ff', text: '「ほう……王将に敗れて海へ落ちたとは思えん良い目だ。基本の立ち回りは合格だな！」' },
+                { scene: 'poor_bed', speaker: '主人公', kanji: '歩', color: '#ffd32a', text: '「はぁ、はぁ……ありがとうございます！ もっと強くなって、必ず闇王と王将たちを倒します！」' },
+                { scene: 'poor_bed', speaker: '老人（村長）', kanji: '老', color: '#feca57', text: '「見事じゃ！ まずは第一歩を踏み出したな。さあ、次の試練へ備えるのじゃ！」' }
+            ]
+        }
+    ];
+
+    // 2. 高精細ドット絵キャンバス＋会話再生エンジン
+    window.playCustomStoryTalk = function(talkList, onFinish) {
+        const container = document.getElementById('game-container');
+        if (!container || !talkList || talkList.length === 0) {
+            if (onFinish) onFinish();
+            return;
+        }
+
+        if (window.pixelCutsceneAnimId) {
+            cancelAnimationFrame(window.pixelCutsceneAnimId);
+            window.pixelCutsceneAnimId = null;
+        }
+        const old = document.getElementById('custom-story-modal');
+        if (old) old.remove();
+
+        const modal = document.createElement('div');
+        modal.id = 'custom-story-modal';
+        modal.style.cssText =
+            'position:absolute; inset:0; background:rgba(5, 7, 15, 0.96); z-index:260; ' +
+            'display:flex; flex-direction:column; justify-content:space-between; align-items:center; ' +
+            'padding:10px 14px 12px 14px; box-sizing:border-box; cursor:pointer;';
+
+        modal.innerHTML =
+            '<div style="width:100%; display:flex; justify-content:space-between; align-items:center;">' +
+                '<span style="font-size:11px; color:#ffd32a; font-weight:bold;">📖 村人下剋上伝 〜序章〜</span>' +
+                '<button type="button" id="btn-skip-story-talk" style="background:rgba(0,0,0,0.7); color:#ffd32a; border:1px solid #ffd32a; border-radius:4px; padding:3px 10px; font-size:11px; font-weight:bold; cursor:pointer;">会話をスキップ ▶▶</button>' +
+            '</div>' +
+            '<canvas id="hi-pixel-cutscene-canvas" width="320" height="126" style="width:100%; max-width:560px; height:220px; border-radius:8px; border:2px solid #ffd32a; image-rendering:pixelated; background:#090a14; box-shadow:0 4px 18px rgba(0,0,0,0.85);"></canvas>' +
+            '<div id="story-dialogue-card" style="width:100%; max-width:560px;"></div>';
+
+        container.appendChild(modal);
+
+        const canvas = document.getElementById('hi-pixel-cutscene-canvas');
+        const ctx = canvas ? canvas.getContext('2d') : null;
+        if (ctx) ctx.imageSmoothingEnabled = false;
+
+        let step = 0;
+        let tick = 0;
+
+        function finishAll() {
+            if (window.pixelCutsceneAnimId) {
+                cancelAnimationFrame(window.pixelCutsceneAnimId);
+                window.pixelCutsceneAnimId = null;
+            }
+            modal.remove();
+            if (onFinish) onFinish();
+        }
+
+        const skipBtn = document.getElementById('btn-skip-story-talk');
+        if (skipBtn) {
+            skipBtn.onclick = (ev) => {
+                ev.stopPropagation();
+                finishAll();
+            };
+        }
+
+        function drawDialogueCard() {
+            const item = talkList.at(step);
+            if (!item) {
+                finishAll();
+                return;
+            }
+            const cardBox = document.getElementById('story-dialogue-card');
+            if (!cardBox) return;
+
+            const isNarrator = (item.speaker === '語り');
+            cardBox.innerHTML =
+                '<div style="background:linear-gradient(135deg, #1e272e, #111622); ' +
+                'border:3px solid ' + item.color + '; border-radius:10px; padding:10px 14px; ' +
+                'box-shadow:0 0 20px ' + item.color + '; display:flex; gap:12px; align-items:center;">' +
+                    (isNarrator ? '' :
+                        '<div style="flex-shrink:0; width:50px; height:60px; background:linear-gradient(180deg, #fff3d1, #c88a36); ' +
+                        'clip-path:polygon(50% 0%, 100% 24%, 86% 100%, 14% 100%, 0% 24%); ' +
+                        'display:flex; justify-content:center; align-items:center; font-size:23px; font-weight:bold; color:#1a1105;">' +
+                            item.kanji +
+                        '</div>'
+                    ) +
+                    '<div style="flex:1; text-align:left;">' +
+                        (isNarrator ? '' : '<div style="font-size:12px; font-weight:bold; color:' + item.color + '; margin-bottom:3px;">' + item.speaker + '</div>') +
+                        '<div style="font-size:13px; color:' + (isNarrator ? '#dfe6e9' : '#ffffff') + '; line-height:1.45; min-height:38px;">' + item.text + '</div>' +
+                        '<div style="text-align:right; font-size:10px; color:#ffd32a; margin-top:4px;">▼ タップして次へ (' + (step + 1) + '/' + talkList.length + ')</div>' +
+                    '</div>' +
+                '</div>';
+        }
+
+        function animatePixelCanvas() {
+            const item = talkList.at(step);
+            if (!item) return;
+            tick++;
+            if (ctx && item.scene) {
+                const handled = window.renderHiPixelScenePart1 && window.renderHiPixelScenePart1(ctx, item.scene, tick);
+                if (!handled && window.renderHiPixelScenePart2) {
+                    window.renderHiPixelScenePart2(ctx, item.scene, tick);
+                }
+            }
+            window.pixelCutsceneAnimId = requestAnimationFrame(animatePixelCanvas);
+        }
+
+        modal.onclick = () => {
+            if (typeof playSE === 'function') playSE('select');
+            step++;
+            tick = 0;
+            drawDialogueCard();
+        };
+
+        drawDialogueCard();
+        window.pixelCutsceneAnimId = requestAnimationFrame(animatePixelCanvas);
+    };
+})();
+
+// ==============================================================================
+// 👾✨ 全16幕・高精細ハイディテール・ドット絵エンジン【第6回 / 6：専用画面＆バトル連動】
+// ==============================================================================
+(function() {
+    // 1. ストーリーモード専用スクリーン（#story-screen）生成＆遷移
+    window.openDedicatedStoryScreen = function() {
+        if (typeof playSE === 'function') playSE('select');
+        const container = document.getElementById('game-container');
+        if (!container) return;
+
+        let scrStory = document.getElementById('story-screen');
+        if (!scrStory) {
+            scrStory = document.createElement('div');
+            scrStory.id = 'story-screen';
+            scrStory.className = 'screen';
+            scrStory.style.cssText =
+                'position:absolute; inset:0; ' +
+                'background:radial-gradient(circle at 50% 20%, #2c1e4a 0%, #120d24 60%, #05050c 100%); ' +
+                'padding:14px 16px; box-sizing:border-box; display:none; flex-direction:column; z-index:40;';
+            container.appendChild(scrStory);
+        }
+
+        if (window.scrTitle) window.scrTitle.style.display = 'none';
+        if (window.scrSelect) window.scrSelect.style.display = 'none';
+        if (window.scrGame) window.scrGame.style.display = 'none';
+        if (window.scrResult) window.scrResult.style.display = 'none';
+
+        const clearedList = JSON.parse(localStorage.getItem('smash_shogi_story_cleared') || '[]');
+        let listHtml = '';
+        window.CUSTOM_STORY_CHAPTERS.forEach(ch => {
+            const isCleared = clearedList.includes(ch.id);
+            listHtml +=
+                '<div style="background:rgba(0,0,0,0.6); border:2px solid ' + (isCleared ? '#2ecc71' : '#ffd32a') + '; ' +
+                'border-radius:10px; padding:12px; margin-bottom:10px;">' +
+                    '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">' +
+                        '<span style="font-size:15px; font-weight:bold; color:#ffd32a;">' + ch.title + '</span>' +
+                        '<span style="background:#222; border:1px solid #00d2ff; color:#00d2ff; padding:2px 6px; border-radius:4px; font-size:10px; font-weight:bold;">入門・チュートリアル</span>' +
+                    '</div>' +
+                    '<div style="font-size:12px; color:#dfe6e9; margin-bottom:8px;">' + ch.subtitle + '</div>' +
+                    '<div style="display:flex; justify-content:space-between; align-items:center;">' +
+                        '<span style="font-size:11px; font-weight:bold; color:' + (isCleared ? '#2ecc71' : '#ff9f43') + ';">' +
+                            (isCleared ? '✅ クリア済み' : '🔥 未クリア') +
+                        '</span>' +
+                        '<button type="button" onclick="startStoryChapterById(\'' + ch.id + '\')" ' +
+                        'style="padding:7px 20px; font-size:13px; font-weight:bold; background:linear-gradient(135deg, #eb2f06, #ff9f43); color:#fff; border:1px solid #fff; border-radius:6px; cursor:pointer;">' +
+                            '▶ 物語を始める' +
+                        '</button>' +
+                    '</div>' +
+                '</div>';
+        });
+
+        scrStory.innerHTML =
+            '<div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #ffd32a; padding-bottom:6px; margin-bottom:10px;">' +
+                '<div>' +
+                    '<div style="font-size:10px; color:#00d2ff; letter-spacing:2px;">STORY MODE</div>' +
+                    '<div style="font-size:18px; font-weight:900; color:#ffd32a; text-shadow:0 0 10px #ff3f3f;">📖 村人下剋上伝 〜成金無双〜</div>' +
+                '</div>' +
+                '<button type="button" onclick="document.getElementById(\'story-screen\').style.display=\'none\'; goToSelectScreen();" ' +
+                'style="padding:6px 12px; font-size:11px; font-weight:bold; background:#34495e; color:#fff; border:1px solid #7f8c8d; border-radius:6px; cursor:pointer;">' +
+                    '← モード選択へ戻る' +
+                '</button>' +
+            '</div>' +
+            '<div style="background:rgba(255,211,42,0.1); border-left:3px solid #ffd32a; padding:6px 10px; font-size:11px; color:#f5cd79; margin-bottom:10px;">' +
+                '【あらすじ】闇王の『理を変える力』と謎の薬により駒へと変えられた村人たち。母の犠牲で生き延びた主人公（歩）の反撃が始まる――。' +
+            '</div>' +
+            '<div style="flex:1; overflow-y:auto;">' + listHtml + '</div>';
+
+        scrStory.style.display = 'flex';
+    };
+
+    // 2. セレクト画面に「📖 ストーリーモード」ボタンを追加
+    function injectStoryBtn() {
+        const offlineBtn = document.getElementById('mode-offline');
+        if (!offlineBtn || document.getElementById('mode-story')) return;
+        const storyBtn = document.createElement('button');
+        storyBtn.type = 'button';
+        storyBtn.id = 'mode-story';
+        storyBtn.className = 'btn-toggle';
+        storyBtn.style.cssText = 'border-color:#ffd32a; color:#ffd32a; background:#2c1e4a;';
+        storyBtn.textContent = '📖 ストーリーモード';
+        storyBtn.onclick = () => window.openDedicatedStoryScreen();
+        offlineBtn.parentElement.appendChild(storyBtn);
+    }
+    const _origInitSel = initSelectScreen;
+    initSelectScreen = function() { _origInitSel.apply(this, arguments); injectStoryBtn(); };
+    setTimeout(injectStoryBtn, 400);
+
+    // 3. 章の開始（全16幕のドット絵プロローグ ➔ 初心者向け王国の戦士チュートリアル戦）
+    window.startStoryChapterById = function(chapterId) {
+        const ch = window.CUSTOM_STORY_CHAPTERS.find(c => c.id === chapterId);
+        if (!ch) return;
+
+        const scrStory = document.getElementById('story-screen');
+        if (scrStory) scrStory.style.display = 'none';
+        window.activeStoryChapter = ch;
+
+        if (ch.playerChar) selectedCharKey = ch.playerChar;
+        selectedStage = ch.stage || 1;
+        selectedCpuType = ch.bossType || 'king2';
+        selectedCpuLevel = ch.cpuLv || 1;
+        gameMode = 'offline';
+        myRole = 'offline';
+
+        window.playCustomStoryTalk(ch.introTalk, () => {
+            executeGameStart();
+            if (ch.bossName) {
+                const eNameUi = document.getElementById('ui-e-name');
+                const eTagUi = document.getElementById('enemy-nametag');
+                if (eNameUi) eNameUi.textContent = ch.bossName;
+                if (eTagUi) eTagUi.textContent = ch.bossName;
+            }
+            if (ch.bossKanji) {
+                const eTextUi = document.getElementById('e-text');
+                if (eTextUi) eTextUi.textContent = ch.bossKanji;
+            }
+            if (ch.isTutorial && e) {
+                e.speed = 1.65;
+                e.power = 0.55;
+                e.weight = 0.72;
+                e.cooldown = 75;
+                e.isTutorialBot = true;
+            }
+        });
+    };
+
+    // 4. チュートリアル中の敵の攻撃ペースを初心者向けに緩和
+    const _origUpdateTut = updateFrame;
+    updateFrame = function() {
+        if (e && e.isTutorialBot && window.activeStoryChapter) {
+            e.spGauge = 0;
+            if (e.cooldown === 25) e.cooldown = 65;
+        }
+        _origUpdateTut.apply(this, arguments);
+    };
+
+    // 5. 試合終了後のストーリー進行（勝利後会話 ➔ ストーリー画面へ戻る）
+    const _origEndStory = endMatch;
+    endMatch = function(playerWon) {
+        const ch = window.activeStoryChapter;
+        if (!ch) { _origEndStory.apply(this, arguments); return; }
+
+        clearInterval(gameTimer);
+        gameTimer = null;
+        window.removeEventListener('keydown', handleKeyDown);
+        window.removeEventListener('keyup', handleKeyUp);
+        resetAllKeyStates();
+        const overlay = document.getElementById('touch-pad-overlay');
+        if (overlay) overlay.style.display = 'none';
+        const recPanel = document.getElementById('record-control-panel');
+        if (recPanel) recPanel.style.display = 'none';
+        window.activeStoryChapter = null;
+
+        if (playerWon) {
+            let cleared = JSON.parse(localStorage.getItem('smash_shogi_story_cleared') || '[]');
+            if (!cleared.includes(ch.id)) {
+                cleared.push(ch.id);
+                localStorage.setItem('smash_shogi_story_cleared', JSON.stringify(cleared));
+            }
+            window.playCustomStoryTalk(ch.winTalk, () => { window.openDedicatedStoryScreen(); });
+        } else {
+            alert('【訓練失敗…】もう一度「王国の戦士」の訓練に挑戦しよう！');
+            window.openDedicatedStoryScreen();
+        }
+    };
+})();
+
+// ==============================================================================
+// ✍️✨ ドット絵の将棋駒の文字だけをくっきりテキスト化するパッチ
+// ==============================================================================
+(function() {
+    // 1. 文字のドットを抜いた「無地の木目駒ベース」に書き換え
+    window.HI_SPRITES_24x32.piece_pawn = [
+        '...........KK...........',
+        '..........KYYK..........',
+        '.........KYYYYK.........',
+        '........KYYYYYYK........',
+        '.......KYYYYYYYYK.......',
+        '......KYYYYYYYYYYK......',
+        '.....KYYYYYYYYYYYYK.....',
+        '....KYYYYYYYYYYYYYYK....',
+        '....KYYYYYYYYYYYYYYK....',
+        '...KYYYYYYYYYYYYYYYYK...',
+        '...KYYYYYYYYYYYYYYYYK...',
+        '...KYYYYYYYYYYYYYYYYK...',
+        '..KYYYYYYYYYYYYYYYYYYK..',
+        '..KYYYYYYYYYYYYYYYYYYK..',
+        '..KYYYYYYYYYYYYYYYYYYK..',
+        '..KYYYYYYYYYYYYYYYYYYK..',
+        '..KYYYYYYYYYYYYYYYYYYK..',
+        '.KYYYYYYYYYYYYYYYYYYYYK.',
+        '.KYYYYYYYYYYYYYYYYYYYYK.',
+        '.KYYYYYYYYYYYYYYYYYYYYK.',
+        '.KYYYYYYYYYYYYYYYYYYYYK.',
+        '.KyyyyyyyyyyyyyyyyyyyyK.',
+        '.KyyyyyyyyyyyyyyyyyyyyK.',
+        '..KKKKKKKKKKKKKKKKKKKK..',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................'
+    ];
+
+    window.HI_SPRITES_24x32.piece_mom = [
+        '...........KK...........',
+        '..........KPPK..........',
+        '.........KPPPPK.........',
+        '........KPPPPPPK........',
+        '.......KPPPPPPPPK.......',
+        '......KPPPPPPPPPPK......',
+        '.....KPPPPPPPPPPPPK.....',
+        '....KPPPPPPPPPPPPPPK....',
+        '....KPPPPPPPPPPPPPPK....',
+        '...KPPPPPPPPPPPPPPPPK...',
+        '...KPPPPPPPPPPPPPPPPK...',
+        '...KPPPPPPPPPPPPPPPPK...',
+        '..KPPPPPPPPPPPPPPPPPPK..',
+        '..KPPPPPPPPPPPPPPPPPPK..',
+        '..KPPPPPPPPPPPPPPPPPPK..',
+        '.KppppppppppppppppppppK.',
+        '.KppppppppppppppppppppK.',
+        '..KKKKKKKKKKKKKKKKKKKK..',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................'
+    ];
+
+    window.HI_SPRITES_24x32.piece_king = [
+        '...........KK...........',
+        '..........KGGK..........',
+        '.........KGGGGK.........',
+        '........KGGGGGGK........',
+        '.......KGGGGGGGGK.......',
+        '......KGGGGGGGGGGK......',
+        '.....KGGGGGGGGGGGGK.....',
+        '....KGGGGGGGGGGGGGGK....',
+        '....KGGGGGGGGGGGGGGK....',
+        '...KGGGGGGGGGGGGGGGGK...',
+        '...KGGGGGGGGGGGGGGGGK...',
+        '...KGGGGGGGGGGGGGGGGK...',
+        '..KGGGGGGGGGGGGGGGGGGK..',
+        '..KGGGGGGGGGGGGGGGGGGK..',
+        '..KGGGGGGGGGGGGGGGGGGK..',
+        '.KGGGGGGGGGGGGGGGGGGGGK.',
+        '.KRRRRRRRRRRRRRRRRRRRRK.',
+        '.KrrrRRRRRRRRRRRRRRrrrK.',
+        '.KrrrRRRRRRRRRRRRRRrrrK.',
+        '.KddddddddddddddddddddK.',
+        '..KKKKKKKKKKKKKKKKKKKK..',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................',
+        '........................'
+    ];
+
+    // 2. ドット絵の駒を描画した直後に、くっきりしたテキストで漢字を重ねる
+    const _origDrawHiPixel = window.drawHiPixelSprite;
+    window.drawHiPixelSprite = function(ctx, key, ox, oy, scale = 1, flipX = false, rotDeg = 0) {
+        _origDrawHiPixel.apply(this, arguments);
+
+        const textInfo = {
+            piece_pawn: { char: '歩', color: '#1a1105', offsetY: -3.5, size: 11 },
+            piece_mom:  { char: '母', color: '#4a0826', offsetY: -6.5, size: 9.5 },
+            piece_king: { char: '王', color: '#8f1111', offsetY: -6.0, size: 10.5 }
+        };
+
+        const info = textInfo[key];
+        if (!info) return;
+
+        ctx.save();
+        ctx.translate(Math.round(ox), Math.round(oy));
+        if (rotDeg !== 0) ctx.rotate((rotDeg * Math.PI) / 180);
+
+        const fontSize = Math.round(info.size * scale);
+        ctx.font = 'bold ' + fontSize + 'px serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = info.color;
+        ctx.fillText(info.char, 0, info.offsetY * scale);
+        ctx.restore();
+    };
+})();
+
+// ==============================================================================
+// ⏸️📋 全モード共通：一時停止（ポーズ）メニュー ＆ 操作方法ガイド【Part 1 / 4】
+// ==============================================================================
+(function() {
+    window.isGamePaused = false;
+
+    // 1. ゲーム進行（updateFrame）を一時停止フラグで完全ストップさせるフック
+    const _origUpdateForPause = updateFrame;
+    updateFrame = function() {
+        if (window.isGamePaused) return;
+        _origUpdateForPause.apply(this, arguments);
+    };
+
+    // 2. バトル画面左上に一時停止ボタン（Ⅱ）を配置
+    function ensurePauseUI() {
+        const stage = document.getElementById('battle-stage');
+        if (!stage) return;
+
+        if (!document.getElementById('btn-game-pause')) {
+            const pBtn = document.createElement('button');
+            pBtn.type = 'button';
+            pBtn.id = 'btn-game-pause';
+            pBtn.textContent = '⏸';
+            pBtn.style.cssText =
+                'position:absolute; top:10px; left:10px; width:34px; height:34px; ' +
+                'background:rgba(0,0,0,0.72); color:#ffd32a; border:2px solid #ffd32a; ' +
+                'border-radius:8px; font-size:15px; font-weight:bold; cursor:pointer; z-index:110;';
+            pBtn.onclick = () => window.togglePauseMenu(true);
+            stage.appendChild(pBtn);
+        }
+
+        // 一時停止メニューオーバーレイ
+        if (!document.getElementById('pause-menu-overlay')) {
+            const overlay = document.createElement('div');
+            overlay.id = 'pause-menu-overlay';
+            overlay.style.cssText =
+                'position:absolute; inset:0; background:rgba(0, 0, 0, 0.82); ' +
+                'display:none; flex-direction:column; justify-content:center; align-items:center; ' +
+                'z-index:250; padding:16px; box-sizing:border-box;';
+
+            overlay.innerHTML =
+                '<div id="pause-main-box" style="width:100%; max-width:300px; background:linear-gradient(135deg, #1e272e, #0f141e); ' +
+                'border:3px solid #ffd32a; border-radius:12px; padding:18px; text-align:center; box-shadow:0 0 30px rgba(255,211,42,0.5);">' +
+                    '<div style="font-size:20px; font-weight:900; color:#ffd32a; letter-spacing:2px; margin-bottom:14px;">⏸ PAUSE MENU</div>' +
+                    '<button type="button" id="btn-pause-resume" style="width:100%; padding:10px; margin-bottom:10px; font-size:14px; font-weight:bold; background:#2ecc71; color:#000; border:none; border-radius:6px; cursor:pointer;">・試合を再開</button>' +
+                    '<button type="button" id="btn-pause-controls" style="width:100%; padding:10px; margin-bottom:10px; font-size:14px; font-weight:bold; background:#0984e3; color:#fff; border:none; border-radius:6px; cursor:pointer;">・操作方法</button>' +
+                    '<button type="button" id="btn-pause-surrender" style="width:100%; padding:10px; font-size:14px; font-weight:bold; background:#eb2f06; color:#fff; border:none; border-radius:6px; cursor:pointer;">・負けを認める</button>' +
+                '</div>' +
+                '<div id="pause-controls-box" style="display:none; width:100%; max-width:440px; background:linear-gradient(135deg, #1e272e, #0f141e); ' +
+                'border:3px solid #00d2ff; border-radius:12px; padding:16px; text-align:left; box-shadow:0 0 30px rgba(0,210,255,0.5);">' +
+                    '<div style="font-size:16px; font-weight:bold; color:#00d2ff; text-align:center; margin-bottom:10px; border-bottom:1px solid #3c6382; padding-bottom:6px;">🎮 操作方法ガイド</div>' +
+                    '<div style="font-size:12px; color:#fff; line-height:1.65; margin-bottom:12px;">' +
+                        '<div><strong style="color:#ffd32a;">【移動】</strong> PC：左右矢印キー（◀ ▶） / スマホ：左十字キー・スティック</div>' +
+                        '<div><strong style="color:#ffd32a;">【ジャンプ】</strong> PC：Space または ▲（空中ジャンプ可能） / スマホ：▲跳ボタン</div>' +
+                        '<div><strong style="color:#ffd32a;">【通常攻撃】</strong> PC：Zキー（歩は3回当てると「と金」に進化！） / スマホ：攻撃ボタン</div>' +
+                        '<div><strong style="color:#ffd32a;">【シールド（盾）】</strong> PC：Cキー（長押しで防御バリア） / スマホ：盾ボタン</div>' +
+                        '<div><strong style="color:#ffd32a;">【復帰技】</strong> PC：Vキー（空中で大きく上昇＋前進） / スマホ：復帰ボタン</div>' +
+                        '<div><strong style="color:#ffd32a;">【必殺技（SP）】</strong> PC：Xキー（ゲージ100%で発動） / スマホ：SP技ボタン</div>' +
+                        '<div><strong style="color:#ffd32a;">【一時停止】</strong> PC：Escキー / 画面左上の「⏸」ボタン</div>' +
+                    '</div>' +
+                    '<button type="button" id="btn-close-controls-guide" style="width:100%; padding:8px; font-size:13px; font-weight:bold; background:#34495e; color:#fff; border:1px solid #fff; border-radius:6px; cursor:pointer;">← メニューへ戻る</button>' +
+                '</div>';
+
+            stage.appendChild(overlay);
+
+            document.getElementById('btn-pause-resume').onclick = () => window.togglePauseMenu(false);
+            document.getElementById('btn-pause-controls').onclick = () => {
+                document.getElementById('pause-main-box').style.display = 'none';
+                document.getElementById('pause-controls-box').style.display = 'block';
+            };
+            document.getElementById('btn-close-controls-guide').onclick = () => {
+                document.getElementById('pause-controls-box').style.display = 'none';
+                document.getElementById('pause-main-box').style.display = 'block';
+            };
+            document.getElementById('btn-pause-surrender').onclick = () => {
+                window.togglePauseMenu(false);
+                if (typeof endMatch === 'function') endMatch(false);
+            };
+        }
+    }
+
+    // 3. 一時停止の開閉制御関数
+    window.togglePauseMenu = function(forceState) {
+        const gameView = document.getElementById('game-view');
+        if (!gameView || gameView.style.display === 'none') return;
+        if (!gameTimer) return; // 試合中でなければ無効
+
+        ensurePauseUI();
+        const nextState = (typeof forceState === 'boolean') ? forceState : !window.isGamePaused;
+        window.isGamePaused = nextState;
+
+        const overlay = document.getElementById('pause-menu-overlay');
+        const mainBox = document.getElementById('pause-main-box');
+        const ctrlBox = document.getElementById('pause-controls-box');
+
+        if (overlay) {
+            overlay.style.display = nextState ? 'flex' : 'none';
+            if (mainBox) mainBox.style.display = 'block';
+            if (ctrlBox) ctrlBox.style.display = 'none';
+        }
+        if (nextState) {
+            resetAllKeyStates();
+        }
+        if (typeof playSE === 'function') playSE('select');
+    };
+
+    // 4. PCの Esc キーで一時停止を開閉
+    window.addEventListener('keydown', (ev) => {
+        if (ev.key === 'Escape') {
+            window.togglePauseMenu();
+        }
+    });
+
+    // 試合開始時にポーズ状態をリセットしてUIを準備
+    const _origStartForPause = executeGameStart;
+    executeGameStart = function() {
+        window.isGamePaused = false;
+        _origStartForPause.apply(this, arguments);
+        ensurePauseUI();
+        const overlay = document.getElementById('pause-menu-overlay');
+        if (overlay) overlay.style.display = 'none';
+    };
+})();
+
+// ==============================================================================
+// 🎓⚔️ 段階式インタラクティブ・チュートリアル【Part 2 / 4：進行＆先取り判定】
+// ==============================================================================
+(function() {
+    window.TUTORIAL_STATE = {
+        active: false,
+        step: 0, // 0:移動, 1:ジャンプ, 2:攻撃, 3:ガード, 4:復帰技, 5:SP技, 6:実戦開始
+        doneMove: false,
+        doneJump: false,
+        doneAtk: false,
+        doneGuard: false,
+        doneRecover: false,
+        doneSp: false,
+        allDoneEarly: false,
+        stepTimer: 0
+    };
+
+    const STEP_GUIDES = [
+        {
+            title: '【訓練 1/6：移動】',
+            msg: '王国の戦士：「まずは移動だ！ 左右キー（◀ ▶）またはスティックで左右に動いてみろ！」'
+        },
+        {
+            title: '【訓練 2/6：ジャンプ】',
+            msg: '王国の戦士：「次はジャンプだ！ Spaceキー（または ▲ / ▲跳ボタン）で跳んでみろ！ 空中でもう1回跳べるぞ！」'
+        },
+        {
+            title: '【訓練 3/6：攻撃】',
+            msg: '王国の戦士：「次は攻撃だ！ Zキー（または 攻撃ボタン）で剣を振れ！ 俺に当ててみろ！」'
+        },
+        {
+            title: '【訓練 4/6：ガード（盾）】',
+            msg: '王国の戦士：「次は防御だ！ Cキー（または 盾ボタン）を長押しして結界バリアを張ってみろ！」'
+        },
+        {
+            title: '【訓練 5/6：復帰技】',
+            msg: '王国の戦士：「場外に落ちそうな時は復帰技だ！ Vキー（または 復帰ボタン）で大きく上昇してみろ！」'
+        },
+        {
+            title: '【訓練 6/6：スペシャル技】',
+            msg: '王国の戦士：「最後は奥義だ！ SPゲージを満タンにしてやる、Xキー（または SP技ボタン）で必殺技を放て！」'
+        }
+    ];
+
+    window.ensureTutorialBanner = function() {
+        const stage = document.getElementById('battle-stage');
+        if (!stage) return null;
+
+        let box = document.getElementById('tutorial-coach-banner');
+        if (!box) {
+            box = document.createElement('div');
+            box.id = 'tutorial-coach-banner';
+            box.style.cssText =
+                'position:absolute; top:10px; left:52px; right:12px; ' +
+                'background:rgba(15, 20, 35, 0.9); border:2px solid #00d2ff; border-radius:8px; ' +
+                'padding:6px 10px; z-index:105; display:none; box-shadow:0 0 15px rgba(0,210,255,0.45); pointer-events:none;';
+            stage.appendChild(box);
+        }
+        return box;
+    };
+
+    window.updateTutorialBannerText = function() {
+        const box = window.ensureTutorialBanner();
+        if (!box) return;
+        if (!window.TUTORIAL_STATE.active) {
+            box.style.display = 'none';
+            return;
+        }
+        const info = STEP_GUIDES.at(window.TUTORIAL_STATE.step);
+        if (!info) {
+            box.style.display = 'none';
+            return;
+        }
+        box.style.display = 'block';
+        box.innerHTML =
+            '<div style="font-size:11px; font-weight:bold; color:#ffd32a; margin-bottom:2px;">' + info.title + ' <span style="color:#2ecc71; font-size:10px;">（訓練中：落下しても無限復活！）</span></div>' +
+            '<div style="font-size:11px; color:#ffffff; line-height:1.35;">' + info.msg + '</div>';
+    };
+
+    // 歩を「と金」へ強制進化させるヘルパー（移動完了時＆SP技説明時に使用）
+    window.promotePlayerPawnForTutorial = function() {
+        if (!p || selectedCharKey !== 'pawn' || p.isPromoted) return;
+        p.isPromoted = true;
+        document.getElementById('p-text').textContent = 'と';
+        const pEl = document.getElementById('player-fighter');
+        if (pEl) {
+            pEl.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 45%, rgba(160, 20, 40, 0.35) 100%), repeating-linear-gradient(90deg, rgba(180, 40, 60, 0.08) 0px, rgba(180, 40, 60, 0.08) 2px, transparent 2px, transparent 5px), linear-gradient(180deg, #ffe3e8 0%, #ff9aa8 65%, #d6455b 100%)';
+            pEl.style.color = '#8f0b1e';
+            pEl.style.filter = 'drop-shadow(0 1px 0 #b83246) drop-shadow(0 2px 0 #8a1c2d) drop-shadow(0 3px 0 #590d19) drop-shadow(0 6px 6px rgba(0, 0, 0, 0.75))';
+        }
+        document.getElementById('ui-p-status').textContent = '【成金化! 全能力1.5倍】';
+        p.speed *= 1.5; p.power *= 1.5; p.weight *= 1.3;
+        triggerCutIn('と金へ成金進化！');
+    };
+
+    // チュートリアル中の「教えられる前に全操作を完了したか」チェック＆実戦移行
+    window.checkAllDoneEarlyInTutorial = function() {
+        const st = window.TUTORIAL_STATE;
+        if (!st.active || st.allDoneEarly) return false;
+        // ステップ4（復帰技）以前＝まだ最後のSP技を教え終わる前に全操作を実行していた場合
+        if (st.doneMove && st.doneJump && st.doneAtk && st.doneGuard && st.doneRecover && st.doneSp && st.step !== 6) {
+            st.allDoneEarly = true;
+            window.finishTutorialAndStartRealFight(true);
+            return true;
+        }
+        return false;
+    };
+
+    // チュートリアル完了 ➔ 本番戦闘開始演出
+    window.finishTutorialAndStartRealFight = function(wasEarly) {
+        const st = window.TUTORIAL_STATE;
+        st.active = false;
+        st.step = 6;
+        window.updateTutorialBannerText();
+
+        if (typeof playSE === 'function') playSE('counter');
+
+        // 相手（王国の戦士）の訓練ロックを解除し、互いのストックを3にリセットして本番開始！
+        if (e) {
+            e.isTutorialPassive = false;
+            e.stocks = 3;
+            e.dmg = 0;
+            e.x = 410; e.y = 192; e.vx = 0; e.vy = 0;
+        }
+        if (p) {
+            p.stocks = 3;
+            p.dmg = 0;
+            p.x = 150; p.y = 196; p.vx = 0; p.vy = 0;
+        }
+        updateUI();
+
+        const msgText = wasEarly
+            ? '王国の戦士：「……おい、教える前に全部の技を使いこなしやがったな！？ お前、本当に初めてか？ なら手加減はいらんな――本番開始だ！！」'
+            : '王国の戦士：「よし、すべての基本を覚えたな！ ここからは手加減なしの真剣勝負だ――いくぞ！！」';
+
+        const banner = window.ensureTutorialBanner();
+        if (banner) {
+            banner.style.display = 'block';
+            banner.style.borderColor = '#ff3f3f';
+            banner.innerHTML =
+                '<div style="font-size:11px; font-weight:bold; color:#ff3f3f;">【実戦開始！！】</div>' +
+                '<div style="font-size:11px; color:#ffffff;">' + msgText + '</div>';
+            setTimeout(() => {
+                if (banner) banner.style.display = 'none';
+            }, 4200);
+        }
+        triggerCutIn(wasEarly ? 'お前本当に初めてか！？ 実戦開始！！' : '訓練完了！ 実戦開始！！');
+    };
+})();
+
+// ==============================================================================
+// 🎓⚔️ 段階式インタラクティブ・チュートリアル【Part 3 / 4：操作検知フック】
+// ==============================================================================
+(function() {
+    // 1. 攻撃アクションの検知（教えられる前でも実行すれば doneAtk を記録）
+    const _tutHookAtk = triggerPlayerAttack;
+    triggerPlayerAttack = function() {
+        _tutHookAtk.apply(this, arguments);
+        const st = window.TUTORIAL_STATE;
+        if (st && st.active && p && p.attacking > 0) {
+            st.doneAtk = true;
+            window.checkAllDoneEarlyInTutorial();
+        }
+    };
+
+    // 2. ガード（盾）アクションの検知
+    const _tutHookGuard = triggerPlayerGuard;
+    triggerPlayerGuard = function(active) {
+        _tutHookGuard.apply(this, arguments);
+        const st = window.TUTORIAL_STATE;
+        if (st && st.active && active && p && p.isGuarding) {
+            st.doneGuard = true;
+            window.checkAllDoneEarlyInTutorial();
+        }
+    };
+
+    // 3. 復帰技アクションの検知
+    const _tutHookRecover = triggerPlayerRecovery;
+    triggerPlayerRecovery = function() {
+        const wasCanRecover = p ? p.canRecover : false;
+        _tutHookRecover.apply(this, arguments);
+        const st = window.TUTORIAL_STATE;
+        if (st && st.active && wasCanRecover && p && p.canRecover === false) {
+            st.doneRecover = true;
+            window.checkAllDoneEarlyInTutorial();
+        }
+    };
+
+    // 4. スペシャル技（SP）アクションの検知
+    const _tutHookSpecial = triggerPlayerSpecial;
+    triggerPlayerSpecial = function() {
+        const prevSp = p ? p.spGauge : 0;
+        _tutHookSpecial.apply(this, arguments);
+        const st = window.TUTORIAL_STATE;
+        if (st && st.active && prevSp >= 100 && p && p.spGauge === 0) {
+            st.doneSp = true;
+            // もしステップ5（SP技の訓練）到達後に撃った場合、少し余韻をおいて実戦開始！
+            if (st.step === 5) {
+                setTimeout(() => {
+                    if (window.TUTORIAL_STATE.active) {
+                        window.finishTutorialAndStartRealFight(false);
+                    }
+                }, 900);
+            } else {
+                window.checkAllDoneEarlyInTutorial();
+            }
+        }
+    };
+
+    // 5. チュートリアル進行ステップを進めるヘルパー関数
+    window.advanceTutorialStepTo = function(nextStep) {
+        const st = window.TUTORIAL_STATE;
+        if (!st || !st.active) return;
+
+        // すでに次の操作を先取りで完了していた場合、そのステップを飛ばして次へ進むか早期実戦へ！
+        if (window.checkAllDoneEarlyInTutorial()) return;
+
+        st.step = nextStep;
+        st.stepTimer = 0;
+        if (typeof playSE === 'function') playSE('select');
+
+        // 「移動（step 0）が終わったら、SPゲージMAX＆と金に進化！」のご要望を反映
+        if (nextStep === 1 && p) {
+            p.spGauge = 100;
+            updateSPBar();
+            window.promotePlayerPawnForTutorial();
+        }
+
+        // ステップ5（SP技の訓練）に到達した時も、確実に撃てるようSPゲージを100%にする
+        if (nextStep === 5 && p) {
+            p.spGauge = 100;
+            updateSPBar();
+            window.promotePlayerPawnForTutorial();
+        }
+
+        window.updateTutorialBannerText();
+    };
+})();
+
+// ==============================================================================
+// 🎓⚔️ 段階式インタラクティブ・チュートリアル【Part 4 / 4：訓練制御＆完結】
+// ==============================================================================
+(function() {
+    // 1. チュートリアル戦開始時の初期化フック
+    const _origStartStoryTut = startStoryChapterById;
+    startStoryChapterById = function(chapterId) {
+        _origStartStoryTut.apply(this, arguments);
+        const ch = window.CUSTOM_STORY_CHAPTERS.find(c => c.id === chapterId);
+        if (ch && ch.isTutorial) {
+            const st = window.TUTORIAL_STATE;
+            st.active = false;
+            st.step = 0;
+            st.doneMove = false;
+            st.doneJump = false;
+            st.doneAtk = false;
+            st.doneGuard = false;
+            st.doneRecover = false;
+            st.doneSp = false;
+            st.allDoneEarly = false;
+            st.stepTimer = 0;
+        }
+    };
+
+    const _origExecStartTut = executeGameStart;
+    executeGameStart = function() {
+        _origExecStartTut.apply(this, arguments);
+        const ch = window.activeStoryChapter;
+        if (ch && ch.isTutorial) {
+            const st = window.TUTORIAL_STATE;
+            st.active = true;
+            st.step = 0;
+            st.stepTimer = 0;
+            if (e) {
+                e.isTutorialPassive = true;
+            }
+            window.updateTutorialBannerText();
+        } else {
+            window.TUTORIAL_STATE.active = false;
+            window.updateTutorialBannerText();
+        }
+    };
+
+    // 2. 毎フレームのチュートリアル進行・相手待機・無限復活制御
+    const _origUpdateFrameTutFinal = updateFrame;
+    updateFrame = function() {
+        const st = window.TUTORIAL_STATE;
+
+        // 訓練モード中（st.active === true）の特別ルール
+        if (st && st.active && window.activeStoryChapter) {
+            // ① 相手（王国の戦士）は訓練中一切攻撃してこない（ステージ右側で構えて待機）
+            if (e) {
+                e.cooldown = 30;
+                e.attacking = 0;
+                e.spGauge = 0;
+                if (!e.onLift && e.knockbackTimer <= 0) {
+                    const targetStandX = 400;
+                    const diffX = targetStandX - e.x;
+                    e.vx = Math.abs(diffX) > 6 ? Math.sign(diffX) * 1.5 : 0;
+                    e.dir = (p && p.x > e.x) ? 1 : -1;
+                }
+                // 相手も訓練中に落ちたら無限復活
+                if (e.y > 400 || -35 > e.x || e.x > 615) {
+                    e.stocks = 3;
+                    if (typeof setupRespawn === 'function') setupRespawn(e, false);
+                    e.y = 10;
+                }
+            }
+
+            // ② 自分が落ちても何回でもストックが減らず無限復活！
+            if (p && (p.y > 400 || -35 > p.x || p.x > 615)) {
+                p.stocks = 3;
+                p.vx = 0; p.vy = 0; p.knockbackTimer = 0;
+                if (typeof setupRespawn === 'function') setupRespawn(p, true);
+                p.y = 10;
+                updateUI();
+            }
+
+            // ③ 移動・ジャンプの実行検知
+            if (p && !p.onLift) {
+                if (keys.arrowleft || keys.arrowright || Math.abs(p.vx) > 1.2) {
+                    st.doneMove = true;
+                }
+                if (!p.isGrounded && !(p.vy > 0)) {
+                    st.doneJump = true;
+                }
+            }
+
+            // ④ 各ステップの達成チェックと自動ステップアップ（移動 ➔ ジャンプ ➔ 攻撃 ➔ ガード ➔ 復帰技 ➔ SP技）
+            st.stepTimer++;
+            if (!window.checkAllDoneEarlyInTutorial()) {
+                if (st.step === 0 && st.doneMove && st.stepTimer > 35) {
+                    window.advanceTutorialStepTo(1); // 次：ジャンプへ（同時にSP MAX＆と金進化！）
+                } else if (st.step === 1 && st.doneJump && st.stepTimer > 25) {
+                    window.advanceTutorialStepTo(2); // 次：攻撃へ
+                } else if (st.step === 2 && st.doneAtk && st.stepTimer > 25) {
+                    window.advanceTutorialStepTo(3); // 次：ガードへ
+                } else if (st.step === 3 && st.doneGuard && st.stepTimer > 25) {
+                    window.advanceTutorialStepTo(4); // 次：復帰技へ
+                } else if (st.step === 4 && st.doneRecover && st.stepTimer > 25) {
+                    window.advanceTutorialStepTo(5); // 最後：スペシャル技へ
+                }
+            }
+        }
+
+        _origUpdateFrameTutFinal.apply(this, arguments);
+    };
+})();
+
+
 
 </script>
 </body>
