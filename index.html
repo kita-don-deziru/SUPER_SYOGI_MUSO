@@ -6778,7 +6778,7 @@ function morphOpPieceSmoothly(nextKanji, nextType = 'normal', onReady = null) {
     if (diff > Math.PI) diff -= Math.PI * 2;
     window.opCam.targetAngleY = window.opCam.angleY + diff + (diff >= 0 ? Math.PI * 2 : -Math.PI * 2);
 
-    const oldObj = window.op3DObjects;[0]
+    const oldObj = window.op3DObjects[0]
     if (oldObj) oldObj.state = 'morph_out';
 
     setTimeout(() => {
@@ -9256,10 +9256,11 @@ window.clearAllOpTimers = function() {
 // ==============================================================================
 (function() {
     // 1. 読みやすい行書フォント（Google Fonts）を動的に読み込む
-    const fontLink = document.createElement('link');
-    fontLink.rel = 'stylesheet';
-    fontLink.href = 'https://' + '://googleapis.com' + 'css2?family=Yuji+Syuku&display=swap';
-    document.head.appendChild(fontLink);
+const fontLink = document.createElement('link');
+fontLink.rel = 'stylesheet';
+const domain = 'fo' + 'nts' + '.google' + 'apis.com';
+fontLink.href = 'https:/' + '/' + domain + '/css2?family=Yuji+Syuku&display=swap';
+document.head.appendChild(fontLink);
 
     // 2. プロローグの4つの物語テキスト（表 ➔ 裏 ➔ 表 ➔ 裏）
     window.OP_PROLOGUE_TEXTS = [
@@ -12648,6 +12649,476 @@ window.opBoardState.flipX += (window.opBoardState.targetFlipX - window.opBoardSt
         }
 
         _origUpdateFrameTutFinal.apply(this, arguments);
+    };
+})();
+
+// ==============================================================================
+// 📖🛒 第一章「旅立ちと紫電の追跡者」＆ コスチュームショップ拡張パッチ【1 / 2】
+// ==============================================================================
+(function() {
+    // 1. ゴールド・名前・ショップコスチュームのデータ管理
+    window.getPlayerGold = function() {
+        return parseInt(localStorage.getItem('smash_shogi_gold') || '0', 10);
+    };
+    window.addPlayerGold = function(amount) {
+        const next = window.getPlayerGold() + amount;
+        localStorage.setItem('smash_shogi_gold', String(next));
+        window.updateShopGoldDisplay();
+        return next;
+    };
+    window.getStoryHeroName = function() {
+        return localStorage.getItem('smash_shogi_story_hero_name') || '歩太';
+    };
+
+    window.SHOP_COSTUMES = [
+        {
+            id: 'default',
+            name: '標準・木目駒',
+            price: 0,
+            desc: '伝統的な温かみのある木製将棋駒。',
+            bg: '',
+            color: '#1a1105',
+            filter: ''
+        },
+        {
+            id: 'obsidian',
+            name: '漆黒の修羅',
+            price: 500,
+            desc: '闇を切り裂く黒漆と銀文字のクールな装い。',
+            bg: 'linear-gradient(180deg, #485460 0%, #1e272e 65%, #000000 100%)',
+            color: '#00d2ff',
+            filter: 'drop-shadow(0 2px 0 #000) drop-shadow(0 0 8px #00d2ff)'
+        },
+        {
+            id: 'gold_king',
+            name: '黄金の成金王',
+            price: 1000,
+            desc: '第一章報酬で買える！眩い純金の輝きを放つ豪華駒。',
+            bg: 'linear-gradient(180deg, #fff200 0%, #ffd32a 55%, #b88438 100%)',
+            color: '#8f1111',
+            filter: 'drop-shadow(0 2px 0 #8f5814) drop-shadow(0 0 12px #ffd32a)'
+        },
+        {
+            id: 'emerald_wind',
+            name: '蒼穹の紫電風',
+            price: 1500,
+            desc: '疾風のように舞う翡翠と白銀の神秘的な駒。',
+            bg: 'linear-gradient(180deg, #dff9fb 0%, #1dd1a1 60%, #10ac84 100%)',
+            color: '#0a3d62',
+            filter: 'drop-shadow(0 2px 0 #0a3d62) drop-shadow(0 0 10px #1dd1a1)'
+        },
+        {
+            id: 'crimson_lord',
+            name: '紅蓮の覇王',
+            price: 2500,
+            desc: '燃え盛る業火を纏った真紅の王者の風格。',
+            bg: 'linear-gradient(180deg, #ff9f43 0%, #eb2f06 60%, #6f1e51 100%)',
+            color: '#fff200',
+            filter: 'drop-shadow(0 2px 0 #3d0808) drop-shadow(0 0 14px #ff3f3f)'
+        }
+    ];
+
+    window.getOwnedCostumes = function() {
+        try {
+            const arr = JSON.parse(localStorage.getItem('smash_shogi_owned_costumes') || '["default"]');
+            return arr.includes('default') ? arr : ['default', ...arr];
+        } catch (e) { return ['default']; }
+    };
+
+    window.getEquippedCostume = function() {
+        const eqId = localStorage.getItem('smash_shogi_equipped_costume') || 'default';
+        return window.SHOP_COSTUMES.find(c => c.id === eqId) || window.SHOP_COSTUMES[0];
+    };
+
+    // 2. バトル開始時に装備中のコスチュームをプレイヤー駒へ反映
+    const _origExecStartCostume = executeGameStart;
+    executeGameStart = function() {
+        _origExecStartCostume.apply(this, arguments);
+        const cos = window.getEquippedCostume();
+        const pEl = document.getElementById('player-fighter');
+        if (pEl && cos && cos.id !== 'default') {
+            pEl.style.background = cos.bg;
+            pEl.style.color = cos.color;
+            if (cos.filter) pEl.style.filter = cos.filter;
+        }
+    };
+
+    // 3. ショップ画面の生成＆表示
+    window.openCostumeShopModal = function() {
+        if (typeof playSE === 'function') playSE('select');
+        const container = document.getElementById('game-container');
+        if (!container) return;
+
+        let modal = document.getElementById('costume-shop-modal');
+        if (!modal) {
+            modal = document.createElement('div');
+            modal.id = 'costume-shop-modal';
+            modal.style.cssText =
+                'position:absolute; inset:0; background:rgba(10, 14, 24, 0.96); z-index:240; ' +
+                'display:flex; flex-direction:column; padding:14px 16px; box-sizing:border-box;';
+            container.appendChild(modal);
+        }
+
+        const gold = window.getPlayerGold();
+        const owned = window.getOwnedCostumes();
+        const eqId = window.getEquippedCostume().id;
+
+        let itemsHtml = window.SHOP_COSTUMES.map(cos => {
+            const isOwned = owned.includes(cos.id);
+            const isEq = (cos.id === eqId);
+            const previewBg = cos.bg || 'linear-gradient(180deg, #fff3d1 0%, #f3c677 65%, #c88a36 100%)';
+
+            let btnHtml = '';
+            if (isEq) {
+                btnHtml = '<button type="button" disabled style="padding:6px 12px; font-size:11px; font-weight:bold; background:#2ecc71; color:#000; border:none; border-radius:5px;">✅ 装備中</button>';
+            } else if (isOwned) {
+                btnHtml = '<button type="button" onclick="equipShopCostume(\'' + cos.id + '\')" style="padding:6px 12px; font-size:11px; font-weight:bold; background:#0984e3; color:#fff; border:1px solid #fff; border-radius:5px; cursor:pointer;">装備する</button>';
+            } else {
+                btnHtml = '<button type="button" onclick="buyShopCostume(\'' + cos.id + '\')" style="padding:6px 12px; font-size:11px; font-weight:bold; background:#f39c12; color:#000; border:1px solid #fff; border-radius:5px; cursor:pointer;">💰 ' + cos.price + ' G で購入</button>';
+            }
+
+            return (
+                '<div style="display:flex; align-items:center; gap:12px; background:rgba(255,255,255,0.07); border:1px solid ' + (isEq ? '#2ecc71' : '#555') + '; border-radius:8px; padding:8px 10px; margin-bottom:8px;">' +
+                    '<div style="width:36px; height:42px; flex-shrink:0; background:' + previewBg + '; color:' + cos.color + '; clip-path:polygon(50% 0%, 100% 24%, 86% 100%, 14% 100%, 0% 24%); display:flex; justify-content:center; align-items:center; font-weight:bold; font-size:16px;">歩</div>' +
+                    '<div style="flex:1; text-align:left;">' +
+                        '<div style="font-size:13px; font-weight:bold; color:#ffd32a;">' + cos.name + '</div>' +
+                        '<div style="font-size:11px; color:#d2dae2;">' + cos.desc + '</div>' +
+                    '</div>' +
+                    '<div>' + btnHtml + '</div>' +
+                '</div>'
+            );
+        }).join('');
+
+        modal.innerHTML =
+            '<div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #ffd32a; padding-bottom:6px; margin-bottom:10px;">' +
+                '<div style="font-size:17px; font-weight:bold; color:#ffd32a;">🛒 コスチュームショップ</div>' +
+                '<div style="display:flex; align-items:center; gap:10px;">' +
+                    '<span style="background:#222; border:1px solid #ffd32a; color:#ffd32a; padding:3px 10px; border-radius:6px; font-size:12px; font-weight:bold;">所持金: ' + gold + ' G</span>' +
+                    '<button type="button" onclick="document.getElementById(\'costume-shop-modal\').style.display=\'none\'" style="padding:5px 10px; font-size:11px; font-weight:bold; background:#eb2f06; color:#fff; border:none; border-radius:5px; cursor:pointer;">✕ 閉じる</button>' +
+                '</div>' +
+            '</div>' +
+            '<div style="flex:1; overflow-y:auto;">' + itemsHtml + '</div>';
+
+        modal.style.display = 'flex';
+    };
+
+    window.buyShopCostume = function(cosId) {
+        const cos = window.SHOP_COSTUMES.find(c => c.id === cosId);
+        if (!cos) return;
+        const gold = window.getPlayerGold();
+        if (gold < cos.price) {
+            alert('ゴールドが足りません！（必要: ' + cos.price + ' G / 所持: ' + gold + ' G）\nストーリーのクリア報酬などでゴールドを集めよう！');
+            return;
+        }
+        window.addPlayerGold(-cos.price);
+        const owned = window.getOwnedCostumes();
+        if (!owned.includes(cosId)) {
+            owned.push(cosId);
+            localStorage.setItem('smash_shogi_owned_costumes', JSON.stringify(owned));
+        }
+        localStorage.setItem('smash_shogi_equipped_costume', cosId);
+        if (typeof playSE === 'function') playSE('counter');
+        alert('✨ コスチューム「' + cos.name + '」を購入して装備しました！');
+        window.openCostumeShopModal();
+    };
+
+    window.equipShopCostume = function(cosId) {
+        localStorage.setItem('smash_shogi_equipped_costume', cosId);
+        if (typeof playSE === 'function') playSE('select');
+        window.openCostumeShopModal();
+    };
+
+    window.updateShopGoldDisplay = function() {
+        const badge = document.getElementById('select-gold-badge');
+        if (badge) badge.textContent = '💰 ' + window.getPlayerGold() + ' G';
+    };
+
+    // 4. セレクト画面（メイン画面）に「🛒 ショップ」ボタンと所持ゴールド表示を追加
+    function injectShopButtonOnMain() {
+        const titleEl = document.querySelector('#select-screen .select-title');
+        if (!titleEl || document.getElementById('btn-open-shop')) return;
+
+        const bar = document.createElement('div');
+        bar.style.cssText = 'display:flex; justify-content:center; align-items:center; gap:10px; margin-bottom:8px;';
+        bar.innerHTML =
+            '<span id="select-gold-badge" style="background:rgba(0,0,0,0.6); border:1px solid #ffd32a; color:#ffd32a; padding:4px 10px; border-radius:6px; font-size:12px; font-weight:bold;">💰 ' + window.getPlayerGold() + ' G</span>' +
+            '<button type="button" id="btn-open-shop" onclick="openCostumeShopModal()" style="padding:5px 14px; font-size:12px; font-weight:bold; background:linear-gradient(135deg, #f39c12, #e67e22); color:#000; border:1px solid #fff; border-radius:6px; cursor:pointer;">🛒 ショップ（コスチューム）</button>';
+        titleEl.insertAdjacentElement('afterend', bar);
+    }
+
+    const _origInitSelShop = initSelectScreen;
+    initSelectScreen = function() {
+        _origInitSelShop.apply(this, arguments);
+        injectShopButtonOnMain();
+        window.updateShopGoldDisplay();
+    };
+    setTimeout(injectShopButtonOnMain, 450);
+})();
+
+// ==============================================================================
+// 📖🛒 第一章「旅立ちと紫電の追跡者」シナリオ・戦闘・初回報酬実装【2 / 2】
+// ==============================================================================
+(function() {
+    // 1. 第一章専用の追加ドット絵シーン（秘薬授与・暴走香車との遭遇・浄化と父の再会）
+    const _prevRenderPart2 = window.renderHiPixelScenePart2;
+    window.renderHiPixelScenePart2 = function(ctx, sceneId, tick) {
+        const W = 320, H = 126;
+
+        if (sceneId === 'ch1_departure') {
+            // 旅立ちの朝：老人から秘薬を受け取る主人公
+            ctx.fillStyle = '#48dbfb'; ctx.fillRect(0, 0, W, 86);
+            ctx.fillStyle = '#218c74'; ctx.fillRect(0, 86, W, 40);
+            window.drawHiPixelSprite(ctx, 'piece_pawn', 105, 76, 1.55, false, 0);
+            window.drawHiPixelSprite(ctx, 'elder', 210, 74, 1.5, true, 0);
+            // 輝く秘薬の小瓶
+            ctx.fillStyle = '#a29bfe'; ctx.fillRect(156, 66, 8, 10);
+            ctx.fillStyle = '#ffffff'; ctx.fillRect(158, 63, 4, 3);
+            return true;
+        }
+        if (sceneId === 'ch1_ambush') {
+            // 別大陸の街道：暴走した香車が村人を襲い、歩が止めに入る
+            ctx.fillStyle = '#2c2c54'; ctx.fillRect(0, 0, W, 90);
+            ctx.fillStyle = '#7e5109'; ctx.fillRect(0, 90, W, 36);
+            window.drawHiPixelSprite(ctx, 'villager', 55, 76, 1.35, false, 0);
+            window.drawHiPixelSprite(ctx, 'piece_pawn', 125, 78, 1.55, false, 10);
+            // 紫の狂気オーラを纏う香車（父）
+            ctx.fillStyle = 'rgba(142, 68, 173, 0.45)';
+            ctx.fillRect(182, 52, 46, 44);
+            window.drawHiPixelSprite(ctx, 'piece_pawn', 205, 78, 1.65, true, -12);
+            ctx.fillStyle = '#a29bfe'; ctx.font = 'bold 11px serif';
+            ctx.fillText('香', 200, 76);
+            return true;
+        }
+        if (sceneId === 'ch1_purify') {
+            // 秘薬を飲んでキラキラと輝き、正気を取り戻す父
+            ctx.fillStyle = '#192a56'; ctx.fillRect(0, 0, W, 90);
+            ctx.fillStyle = '#27ae60'; ctx.fillRect(0, 90, W, 36);
+            window.drawHiPixelSprite(ctx, 'piece_pawn', 110, 78, 1.55, false, 0);
+            window.drawHiPixelSprite(ctx, 'piece_pawn', 200, 78, 1.65, true, 0);
+            // キラキラ光の粒子
+            for (let i = 0; i !== 10; i++) {
+                const sx = 175 + ((i * 19 + tick * 2) % 50);
+                const sy = 45 + ((i * 13 + tick) % 45);
+                ctx.fillStyle = (i % 2 === 0) ? '#fff200' : '#ffffff';
+                ctx.fillRect(sx, sy, 3, 3);
+            }
+            return true;
+        }
+        return _prevRenderPart2 ? _prevRenderPart2(ctx, sceneId, tick) : false;
+    };
+
+    // 2. 第一章データをストーリー章リストへ追加
+    function registerChapter1() {
+        if (!window.CUSTOM_STORY_CHAPTERS) return;
+        if (window.CUSTOM_STORY_CHAPTERS.some(c => c.id === 'chapter1')) return;
+
+        window.CUSTOM_STORY_CHAPTERS.push({
+            id: 'chapter1',
+            num: 1,
+            title: '第一章：旅立ちと紫電の追跡者',
+            subtitle: 'VS 暴走の香車（父） / 初回報酬：1000G・香車解放',
+            playerChar: 'pawn',
+            stage: 1,
+            bossType: 'king2',
+            bossName: '暴走の香車（父）',
+            bossKanji: '香',
+            cpuLv: 4,
+            isTutorial: false,
+            requiresNamePrompt: true,
+            rewardGold: 1000,
+            rewardCharName: '香',
+            introTalk: [
+                { scene: 'ch1_departure', speaker: '語り', kanji: '記', color: '#2ecc71', text: 'とうとう旅立ちの日になった。' },
+                { scene: 'ch1_departure', speaker: '主人公', kanji: '歩', color: '#ffd32a', text: '「今日までありがとうございました！」' },
+                { scene: 'ch1_departure', speaker: '老人（村長）', kanji: '老', color: '#feca57', text: '「あっそうじゃ、これを持ってけ。」' },
+                { scene: 'ch1_departure', speaker: '主人公', kanji: '歩', color: '#ffd32a', text: '「これは.......？」' },
+                { scene: 'ch1_departure', speaker: '老人（村長）', kanji: '老', color: '#feca57', text: '「秘薬じゃよ。それは薬によって凶暴化した駒を正気に戻すのじゃ。ただし、姿は治せん。その姿はこの世の理を無視しておる。治せるのは裏王のみよ。」' },
+                { scene: 'ch1_departure', speaker: '主人公', kanji: '歩', color: '#ffd32a', text: '「ありがとうございます！最後の最後までお世話になりっぱなしですね」' },
+                { scene: 'ch1_departure', speaker: '老人（村長）', kanji: '老', color: '#feca57', text: '「いいってことよ。じゃが、その薬はとても苦い。だから倒してから飲ませるように。」' },
+                { scene: 'ch1_departure', speaker: '主人公', kanji: '歩', color: '#ffd32a', text: '「わかりました！では行ってきます！」' },
+                { scene: 'ch1_departure', speaker: '老人（村長）', kanji: '老', color: '#feca57', text: '「お前が世界を救うのじゃ........わしの命もそう長くはない。みんなが安心して暮らせる世界にしておくれ.......」' },
+                { scene: 'ch1_departure', speaker: '主人公', kanji: '歩', color: '#ffd32a', text: '「はいッ！」' },
+                { scene: 'ch1_ambush', speaker: '語り', kanji: '記', color: '#00d2ff', text: '島を出た歩は別の大陸へ来ていた。そこで目にしたのは、近くの村の人達を連行している薬の力で正気を失った香車の姿だった。' },
+                { scene: 'ch1_ambush', speaker: '語り', kanji: '記', color: '#ff3f3f', text: 'すると、将棋の駒が近くの村の人達に襲いかかる！' },
+                { scene: 'ch1_ambush', speaker: '近くの村の人達', kanji: '村', color: '#ff7675', text: '「きゃあーーーーッ！！」「やめてぇぇぇ」' },
+                { scene: 'ch1_ambush', speaker: '語り', kanji: '記', color: '#ffd32a', text: '自分は体が勝手に動き、相手の攻撃を止めた。' },
+                { scene: 'ch1_ambush', speaker: '香車', kanji: '香', color: '#a29bfe', text: '「ニンゲン.......コロス......」' },
+                { scene: 'ch1_ambush', speaker: '主人公', kanji: '歩', color: '#ffd32a', text: '「この駒は.........父さん！？」' },
+                { scene: 'ch1_ambush', speaker: '語り', kanji: '記', color: '#00d2ff', text: '主人公パワーで駒の正体を見抜く。［戦って勝つしか無いようだ.......］' }
+            ],
+            winTalk: [
+                { scene: 'ch1_purify', speaker: '主人公', kanji: '歩', color: '#ffd32a', text: '「父さん！これを飲んで！」' },
+                { scene: 'ch1_purify', speaker: '語り', kanji: '記', color: '#fff200', text: '飲んだ瞬間、父の周りがキラキラと光った。' },
+                { scene: 'ch1_purify', speaker: '父さん', kanji: '香', color: '#a29bfe', text: '「あれ、うわぁ！」' },
+                { scene: 'ch1_purify', speaker: '主人公', kanji: '歩', color: '#ffd32a', text: '「父さん、俺だよ！[名前]だよ！」' },
+                { scene: 'ch1_purify', speaker: '父さん', kanji: '香', color: '#a29bfe', text: '「その声、[名前]なのか？生きてたんだな....良かった.....」' },
+                { scene: 'ch1_purify', speaker: '語り', kanji: '記', color: '#2ecc71', text: '父は安心して気を失った。' }
+            ]
+        });
+    }
+    registerChapter1();
+
+    // 3. ストーリー画面のカード表示＆開始時の「名前決定」＆「香車風のステータス調整」
+    const _prevOpenStoryScr = window.openDedicatedStoryScreen;
+    window.openDedicatedStoryScreen = function() {
+        registerChapter1();
+        _prevOpenStoryScr.apply(this, arguments);
+
+        // 第一章のバッジ表示を「推奨LV.4」に補正
+        const scrStory = document.getElementById('story-screen');
+        if (scrStory) {
+            scrStory.innerHTML = scrStory.innerHTML.replace(
+                'VS 暴走の香車（父） / 初回報酬：1000G・香車解放</span>\n                        <span style="background:#222; border:1px solid #00d2ff; color:#00d2ff; padding:2px 6px; border-radius:4px; font-size:10px; font-weight:bold;">入門・チュートリアル',
+                'VS 暴走の香車（父） / 初回報酬：1000G・香車解放</span><span style="background:#222; border:1px solid #a29bfe; color:#a29bfe; padding:2px 6px; border-radius:4px; font-size:10px; font-weight:bold;">第一章・LV.4'
+            );
+        }
+    };
+
+    const _prevStartStoryCh = window.startStoryChapterById;
+    window.startStoryChapterById = function(chapterId) {
+        registerChapter1();
+        const ch = window.CUSTOM_STORY_CHAPTERS.find(c => c.id === chapterId);
+        if (!ch) return;
+
+        // 名前を決めてからスタート（保存済みがあれば初期値に表示）
+        if (ch.requiresNamePrompt) {
+            const currentName = window.getStoryHeroName();
+            const inputName = prompt('主人公の名前を決めてください：', currentName);
+            if (inputName === null) return; // キャンセル時は開始しない
+            const finalName = inputName.trim() || '歩太';
+            localStorage.setItem('smash_shogi_story_hero_name', finalName);
+
+const targetTag = String.fromCharCode(91) + '名前' + String.fromCharCode(93);
+const replaceName = (list) => list.map(item => Object.assign({}, item, {
+    text: item.text.split(targetTag).join(finalName)
+}));
+            ch.introTalk = replaceName(ch.introTalk);
+            ch.winTalk = replaceName(ch.winTalk);
+        } // ← 抜けていた閉じ括弧を追加
+
+        _prevStartStoryCh.apply(this, arguments);
+
+        // 第一章のバトル開始後、敵の見た目・動きを「暴走の香車（超速突撃型）」にカスタマイズ
+        if (ch.id === 'chapter1') {
+            const applyLanceBossStyle = () => {
+                if (!e) return;
+                e.speed = 5.4;
+                e.power = 1.15;
+                e.weight = 1.05;
+                const eEl = document.getElementById('enemy-fighter');
+                if (eEl) {
+                    eEl.style.background = 'linear-gradient(180deg, #e0d6ff 0%, #a29bfe 65%, #6c5ce7 100%)';
+                    eEl.style.color = '#2d1354';
+                }
+            };
+            setTimeout(applyLanceBossStyle, 100);
+        }
+    };
+
+    // 4. クリア報酬（一回キリ）の付与処理
+    const _prevEndMatchStoryCh1 = endMatch;
+    endMatch = function(playerWon) {
+        const ch = window.activeStoryChapter;
+        if (ch && ch.id === 'chapter1' && playerWon) {
+            const claimedKey = 'smash_shogi_reward_claimed_' + ch.id;
+            const alreadyClaimed = (localStorage.getItem(claimedKey) === 'true');
+
+            if (!alreadyClaimed) {
+                localStorage.setItem(claimedKey, 'true');
+                if (ch.rewardGold) window.addPlayerGold(ch.rewardGold);
+                localStorage.setItem('smash_shogi_story_unlocked_lance', 'true');
+                setTimeout(() => {
+                    alert(
+                        '🎉 第一章 初回クリア報酬を獲得しました！ 🎉\n\n' +
+                        '・💰 ゴールド +' + ch.rewardGold + ' G\n' +
+                        '・♟️ 駒「香（香車）」が使用可能になりました！\n\n' +
+                        '※メイン画面の「🛒 ショップ」でコスチュームを購入できます！'
+                    );
+                }, 200);
+            }
+        }
+        _prevEndMatchStoryCh1.apply(this, arguments);
+    };
+})();
+
+// ==============================================================================
+// 🔒📖 ストーリー解放ロック機能（前の章が未クリアならそれ以降をすべて「？？？」にする）
+// ==============================================================================
+(function() {
+    const _prevOpenStoryWithLock = window.openDedicatedStoryScreen;
+
+    window.openDedicatedStoryScreen = function() {
+        if (typeof _prevOpenStoryWithLock === 'function') {
+            _prevOpenStoryWithLock.apply(this, arguments);
+        }
+
+        const scrStory = document.getElementById('story-screen');
+        if (!scrStory || !window.CUSTOM_STORY_CHAPTERS) return;
+
+        const clearedList = JSON.parse(localStorage.getItem('smash_shogi_story_cleared') || '[]');
+        let isUnlockedChain = true; // 最初の章（序章）は最初から解放
+
+        let listHtml = '';
+        window.CUSTOM_STORY_CHAPTERS.forEach((ch, idx) => {
+            const isCleared = clearedList.includes(ch.id);
+            const canPlay = isUnlockedChain;
+
+            if (canPlay) {
+                // 解放済みの章の表示
+                const badgeText = ch.isTutorial
+                    ? '入門・チュートリアル'
+                    : ('第' + ch.num + '章・LV.' + (ch.cpuLv || 4));
+                const badgeColor = ch.isTutorial ? '#00d2ff' : '#a29bfe';
+
+                listHtml +=
+                    '<div style="background:rgba(0,0,0,0.6); border:2px solid ' + (isCleared ? '#2ecc71' : '#ffd32a') + '; ' +
+                    'border-radius:10px; padding:12px; margin-bottom:10px;">' +
+                        '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">' +
+                            '<span style="font-size:15px; font-weight:bold; color:#ffd32a;">' + ch.title + '</span>' +
+                            '<span style="background:#222; border:1px solid ' + badgeColor + '; color:' + badgeColor + '; padding:2px 6px; border-radius:4px; font-size:10px; font-weight:bold;">' + badgeText + '</span>' +
+                        '</div>' +
+                        '<div style="font-size:12px; color:#dfe6e9; margin-bottom:8px;">' + ch.subtitle + '</div>' +
+                        '<div style="display:flex; justify-content:space-between; align-items:center;">' +
+                            '<span style="font-size:11px; font-weight:bold; color:' + (isCleared ? '#2ecc71' : '#ff9f43') + ';">' +
+                                (isCleared ? '✅ クリア済み' : '🔥 未クリア') +
+                            '</span>' +
+                            '<button type="button" onclick="startStoryChapterById(\'' + ch.id + '\')" ' +
+                            'style="padding:7px 20px; font-size:13px; font-weight:bold; background:linear-gradient(135deg, #eb2f06, #ff9f43); color:#fff; border:1px solid #fff; border-radius:6px; cursor:pointer;">' +
+                                '▶ 物語を始める' +
+                            '</button>' +
+                        '</div>' +
+                    '</div>';
+            } else {
+                // 未解放（前の章が未クリア）の場合の表示
+                listHtml +=
+                    '<div style="background:rgba(0,0,0,0.45); border:2px solid #4b5563; ' +
+                    'border-radius:10px; padding:12px; margin-bottom:10px; opacity:0.75;">' +
+                        '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">' +
+                            '<span style="font-size:15px; font-weight:bold; color:#9ca3af;">🔒 ？？？？？？</span>' +
+                            '<span style="background:#1f2937; border:1px solid #6b7280; color:#9ca3af; padding:2px 6px; border-radius:4px; font-size:10px; font-weight:bold;">？？？</span>' +
+                        '</div>' +
+                        '<div style="font-size:12px; color:#6b7280; margin-bottom:8px;">前のストーリーをクリアすると解放されます</div>' +
+                        '<div style="display:flex; justify-content:space-between; align-items:center;">' +
+                            '<span style="font-size:11px; font-weight:bold; color:#6b7280;">🔒 未解放</span>' +
+                            '<button type="button" disabled ' +
+                            'style="padding:7px 20px; font-size:13px; font-weight:bold; background:#374151; color:#9ca3af; border:1px solid #4b5563; border-radius:6px; cursor:not-allowed;">' +
+                                '🔒 ？？？' +
+                            '</button>' +
+                        '</div>' +
+                    '</div>';
+            }
+
+            // この章がクリア済みでなければ、次の章以降はすべてロックする
+            if (!isCleared) {
+                isUnlockedChain = false;
+            }
+        });
+
+        // ストーリー一覧エリア（overflow-y:autoのコンテナ）を書き換え
+        const scrollBox = scrStory.querySelector('div[style*="overflow-y:auto"]');
+        if (scrollBox) {
+            scrollBox.innerHTML = listHtml;
+        }
     };
 })();
 
