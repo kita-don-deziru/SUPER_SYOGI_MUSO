@@ -18826,6 +18826,176 @@ window.createUnifiedPlateau3DEngine = function(canvas) {
     };
 })();
 
+// ==============================================================================
+// 🎨👾 ストーリー会話カットシーン 使い回し解消＆専用ドット絵追加パッチ
+// ==============================================================================
+(function() {
+    // 1. 新規の専用ドット絵シーン描画（序章後半・第2章・第3章・第4章・ボス撃破）
+    const _prevRenderPart2ForUnique = window.renderHiPixelScenePart2;
+    window.renderHiPixelScenePart2 = function(ctx, sceneId, tick) {
+        const W = 320, H = 126;
+
+        // 【序章・第16幕】闇王の邪悪なシルエットと「理を変える力」の回想
+        if (sceneId === 'elder_talk_1' || sceneId === 'elder_talk_2') {
+            ctx.fillStyle = '#0d061a'; ctx.fillRect(0, 0, W, H);
+            const pulse = Math.floor(Math.sin(tick * 0.25) * 6);
+            ctx.fillStyle = 'rgba(142, 68, 173, 0.35)';
+            ctx.fillRect(110 - pulse, 15 - pulse, 100 + pulse * 2, 95 + pulse * 2);
+
+            // 闇王の巨大な駒シルエット＋紫のオーラ
+            window.drawHiPixelSprite(ctx, 'piece_king', 160, 68, 2.3, false, 0);
+            ctx.fillStyle = '#a29bfe';
+            ctx.fillRect(120, 22, 80, 3);
+            ctx.fillRect(105, 95, 110, 3);
+            // 手前で語る老人
+            window.drawHiPixelSprite(ctx, 'elder', 58, 86, 1.35, false, 0);
+            return true;
+        }
+
+        // 【序章・第18幕】怒りを抑え込み拳（刃）を震わせる主人公
+        if (sceneId === 'elder_talk_3') {
+            ctx.fillStyle = '#1f0c0c'; ctx.fillRect(0, 0, W, H);
+            const shake = (tick % 4 < 2) ? -2 : 2;
+            ctx.fillStyle = 'rgba(255, 211, 42, 0.28)';
+            ctx.fillRect(125, 25, 70, 80);
+            window.drawHiPixelSprite(ctx, 'piece_pawn', 160 + shake, 74, 1.85, false, 0);
+            return true;
+        }
+
+        // 【序章・第19幕】村一番の戦士「王国の戦士（玉）」が訓練場に現れる
+        if (sceneId === 'elder_talk_4') {
+            ctx.fillStyle = '#1e3799'; ctx.fillRect(0, 0, W, 86);
+            ctx.fillStyle = '#b88438'; ctx.fillRect(0, 86, W, 40);
+            window.drawHiPixelSprite(ctx, 'piece_pawn', 95, 76, 1.55, false, 0);
+            window.drawHiPixelSprite(ctx, 'elder', 155, 74, 1.35, true, 0);
+            // 王国の戦士（蒼いオーラの玉将）
+            ctx.fillStyle = 'rgba(0, 210, 255, 0.35)';
+            ctx.fillRect(202, 42, 46, 48);
+            window.drawHiPixelSprite(ctx, 'piece_king', 225, 72, 1.75, true, 0);
+            return true;
+        }
+
+        // 【第二章専用】蒼穹の古代遺跡・石柱と神殿
+        if (sceneId === 'ch2_ruins') {
+            ctx.fillStyle = '#0c2461'; ctx.fillRect(0, 0, W, 88);
+            ctx.fillStyle = '#4a69bd'; ctx.fillRect(0, 50, W, 38);
+            ctx.fillStyle = '#82ccdd'; ctx.fillRect(0, 88, W, 38);
+            // 古代遺跡の石柱
+            ctx.fillStyle = '#dfe6e9';
+            ctx.fillRect(45, 25, 16, 63); ctx.fillRect(255, 25, 16, 63);
+            ctx.fillRect(38, 20, 30, 6);  ctx.fillRect(248, 20, 30, 6);
+            window.drawHiPixelSprite(ctx, 'piece_pawn', 125, 76, 1.55, false, 0);
+            window.drawHiPixelSprite(ctx, 'piece_pawn', 175, 76, 1.55, true, 0);
+            return true;
+        }
+
+        // 【第三章専用】灼熱の溶岩城・噴き上がるマグマと黒鉄の城門
+        if (sceneId === 'ch3_lava') {
+            ctx.fillStyle = '#2d0808'; ctx.fillRect(0, 0, W, 88);
+            ctx.fillStyle = '#eb2f06'; ctx.fillRect(0, 88, W, 38);
+            ctx.fillStyle = '#fa983a';
+            const wave = Math.floor(Math.sin(tick * 0.25) * 4);
+            ctx.fillRect(0, 92 + wave, W, 6);
+            // 黒鉄の城壁
+            ctx.fillStyle = '#1e272e';
+            ctx.fillRect(30, 20, 45, 68); ctx.fillRect(245, 20, 45, 68);
+            window.drawHiPixelSprite(ctx, 'piece_pawn', 120, 76, 1.55, false, 0);
+            window.drawHiPixelSprite(ctx, 'piece_pawn', 180, 76, 1.55, true, 0);
+            return true;
+        }
+
+        // 【第四章専用】終焉の天空神殿・星空と黄金の祭壇
+        if (sceneId === 'ch4_temple') {
+            ctx.fillStyle = '#09080f'; ctx.fillRect(0, 0, W, 88);
+            ctx.fillStyle = '#ffffff';
+            for (let s = 0; s < 16; s++) {
+                ctx.fillRect((s * 43) % W, (s * 29) % 75, 2, 2);
+            }
+            ctx.fillStyle = '#2c1e4a'; ctx.fillRect(0, 88, W, 38);
+            ctx.fillStyle = '#ffd32a'; ctx.fillRect(0, 88, W, 3);
+            window.drawHiPixelSprite(ctx, 'piece_pawn', 105, 76, 1.55, false, 0);
+            window.drawHiPixelSprite(ctx, 'piece_king', 215, 68, 2.0, true, 0);
+            return true;
+        }
+
+        // 【ボス撃破専用】ひび割れて光に包まれる敗北ボス
+        if (sceneId === 'boss_defeated') {
+            ctx.fillStyle = '#192a56'; ctx.fillRect(0, 0, W, 90);
+            ctx.fillStyle = '#2f3640'; ctx.fillRect(0, 90, W, 36);
+            window.drawHiPixelSprite(ctx, 'piece_pawn', 100, 78, 1.55, false, 0);
+            window.drawHiPixelSprite(ctx, 'piece_king', 205, 84, 1.85, true, 32);
+            // 勝利の光粒子
+            ctx.fillStyle = '#ffd32a';
+            const off = (tick * 2) % 30;
+            ctx.fillRect(195, 55 - off, 4, 4);
+            ctx.fillRect(220, 62 - off, 4, 4);
+            return true;
+        }
+
+        return _prevRenderPart2ForUnique ? _prevRenderPart2ForUnique(ctx, sceneId, tick) : false;
+    };
+
+    // 2. 第2章〜第4章の会話＆勝利シーンにそれぞれの専用シーンIDを割り当て（使い回しを完全解消）
+    function assignUniqueScenesToAllChapters() {
+        if (!window.CUSTOM_STORY_CHAPTERS) return;
+
+        const ch2 = window.CUSTOM_STORY_CHAPTERS.find(c => c.id === 'chapter2');
+        if (ch2 && ch2.introTalk) {
+            ch2.introTalk.forEach(t => { t.scene = 'ch2_ruins'; });
+        }
+        const ch3 = window.CUSTOM_STORY_CHAPTERS.find(c => c.id === 'chapter3');
+        if (ch3 && ch3.introTalk) {
+            ch3.introTalk.forEach(t => { t.scene = 'ch3_lava'; });
+        }
+        const ch4 = window.CUSTOM_STORY_CHAPTERS.find(c => c.id === 'chapter4');
+        if (ch4 && ch4.introTalk) {
+            ch4.introTalk.forEach(t => { t.scene = 'ch4_temple'; });
+        }
+
+        if (window.BIG_VERTICAL_WORLDS) {
+            const w1 = window.BIG_VERTICAL_WORLDS.chapter1;
+            if (w1 && w1.finalBoss && w1.finalBoss.winTalk) {
+                w1.finalBoss.winTalk.at(0).scene = 'boss_defeated';
+            }
+            const w2 = window.BIG_VERTICAL_WORLDS.chapter2;
+            if (w2) {
+                if (w2.midEvents && w2.midEvents.at(0)) w2.midEvents.at(0).preTalk.forEach(t => { t.scene = 'ch2_ruins'; });
+                if (w2.finalBoss) {
+                    w2.finalBoss.preTalk.forEach(t => { t.scene = 'ch2_ruins'; });
+                    w2.finalBoss.winTalk.forEach(t => { t.scene = 'boss_defeated'; });
+                }
+            }
+            const w3 = window.BIG_VERTICAL_WORLDS.chapter3;
+            if (w3) {
+                if (w3.midEvents && w3.midEvents.at(0)) w3.midEvents.at(0).preTalk.forEach(t => { t.scene = 'ch3_lava'; });
+                if (w3.finalBoss) {
+                    w3.finalBoss.preTalk.forEach(t => { t.scene = 'ch3_lava'; });
+                    w3.finalBoss.winTalk.forEach(t => { t.scene = 'boss_defeated'; });
+                }
+            }
+            const w4 = window.BIG_VERTICAL_WORLDS.chapter4;
+            if (w4 && w4.finalBoss) {
+                w4.finalBoss.preTalk.forEach(t => { t.scene = 'ch4_temple'; });
+            }
+        }
+    }
+    assignUniqueScenesToAllChapters();
+
+    // 3. 毎回の会話起動時に前のフレームの残像が残らないようキャンバスを完全クリア
+    const _prevPlayTalkClear = window.playCustomStoryTalk;
+    window.playCustomStoryTalk = function(talkList, onFinish) {
+        assignUniqueScenesToAllChapters();
+        if (typeof _prevPlayTalkClear === 'function') {
+            _prevPlayTalkClear.apply(this, arguments);
+        }
+        const cvs = document.getElementById('hi-pixel-cutscene-canvas');
+        if (cvs) {
+            const ctx = cvs.getContext('2d');
+            if (ctx) ctx.clearRect(0, 0, cvs.width, cvs.height);
+        }
+    };
+})();
+
 </script>
 </body>
 </html>
